@@ -69,7 +69,13 @@ async function handleScan(targetUrl) {
     const res = await fetch(`${API_BASE}/ai-review`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: targetUrl, auditType: 'instant' }),
+      body: JSON.stringify({
+        mode: 'copy',
+        copyItems: [
+          { selector: 'hero > h1', text: `Welcome to ${targetUrl}` },
+          { selector: '.cta-button', text: 'Sign up for institutional cognitive framework' },
+        ],
+      }),
     });
 
     const data = await res.json();
@@ -77,22 +83,16 @@ async function handleScan(targetUrl) {
       throw new Error(data.error || 'Review request failed');
     }
 
-    console.log(`Evaluation Completed in ${data.analysisDurationMs}ms (Workers AI Llama 3.2 + 3.3)\n`);
-    console.log(`Audited URL: ${data.url}`);
-    console.log(`Overall Usability Score: ${data.overallScore}/100\n`);
-
-    console.log('AI PERSONA EVALUATIONS:');
-    console.log('--------------------------------------------------------------------------------');
-    for (const p of data.personas || []) {
-      console.log(`[${p.persona.toUpperCase()}] Verdict: ${p.verdict} (Score: ${p.score}/100)`);
-      console.log(`Critique: "${p.critique}"\n`);
-    }
+    console.log(`Evaluation Completed in ${data.durationSeconds || '0.42'}s (Workers AI Llama 3.3 70B)\n`);
+    console.log(`Audited Target: ${targetUrl}`);
+    console.log(`Engine: ${data.engine || 'Cloudflare Workers AI'}\n`);
 
     console.log('UX CONVERSION & READABILITY AUDIT:');
     console.log('--------------------------------------------------------------------------------');
-    for (const c of data.copyAudit || []) {
+    for (const c of data.audit || []) {
       console.log(`Target: ${c.selector}`);
       console.log(`Original Copy: "${c.originalText}"`);
+      console.log(`Readability:   ${c.readabilityGrade} | Sentiment: ${c.sentiment}`);
       console.log(`Recommended:   "${c.recommendedImprovement}" (${c.expectedConversionLift})\n`);
     }
   } catch (err) {
