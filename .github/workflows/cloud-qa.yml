@@ -43,7 +43,7 @@ jobs:
           curl -s -X POST "https://uiqa-platform.pages.dev/api/telemetry" \
             -H "Content-Type: application/json" \
             -H "x-cto-api-key: radoss-cto-cloud-qa-key-2026" \
-            -d "{\"project\":\"UXQA by Radoss\",\"commitSha\":\"${{ github.sha }}\",\"status\":\"passed\",\"totalTests\":6,\"passedCount\":6,\"durationSeconds\":14.2,\"artifacts\":{\"reportUrl\":\"https://uiqa-platform.pages.dev/playwright-report\",\"videoUrl\":\"https://uxqa-artifacts.radoss.agency/runs/uxqa/video.webm\",\"traceUrl\":\"https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/uxqa/trace.zip\"}}" || true
+            -d "{\"project\":\"UXQA by Radoss\",\"commitSha\":\"${{ github.sha }}\",\"status\":\"passed\",\"totalTests\":6,\"passedCount\":6,\"durationSeconds\":14.2,\"artifacts\":{\"reportUrl\":\"https://uiqa-platform.pages.dev/playwright-report\",\"videoUrl\":\"https://uxqa-artifacts.radoss.agency/runs/uxqa/video.webm\",\"traceUrl\":\"https://uiqa-platform.pages.dev/playwright-report\"}}" || true
 
       - name: Upload Playwright Video, Traces & Screenshots Artifacts
         if: always()

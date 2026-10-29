@@ -73,7 +73,7 @@ ${body.defectData.description}
 
 #### Video & Telemetry Proof
 - **Video Timestamp:** ${body.defectData.videoTimestamp || '00:14.2'}
-- **Trace Archive:** ${body.defectData.traceUrl || 'https://uxqa-artifacts.radoss.agency/runs/trace.zip'}
+- **Live QA Dashboard:** ${body.defectData.traceUrl || 'https://aura-academy-qa.pages.dev'}
 - **DOM Snippet:**
 \`\`\`html
 ${body.defectData.domSnippet || '<button class="checkout-btn" disabled>Submit Order</button>'}

@@ -52,7 +52,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             skippedCount: 0,
             runnerNodeVersion: 'v24.2.0',
             videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/aira/video_full_flow.webm',
-            traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/aira/trace.zip',
+            traceUrl: 'https://aura-academy-qa.pages.dev',
             reportUrl: 'https://aura-academy-qa.pages.dev',
           }
         ],

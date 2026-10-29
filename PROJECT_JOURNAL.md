@@ -6,6 +6,21 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R2.1: Eradication of All Manual Trace Download Prompts Across Platform & Skills
+- **Context & User Requirement:**
+  - Strict enforcement of Zero-Download Principle: Uchenna explicitly banned all instructions prompting manual zip downloads (`trace.zip`) or manual drag-and-drop to `trace.playwright.dev`.
+  - UXQA delivers immediate, in-browser live web test dashboards (`https://aura-academy-qa.pages.dev`, `https://uiqa-platform.pages.dev/radoss/aira-academy/`) with zero local archive extraction or friction.
+- **Shipped Fixes:**
+  - **Shared Skill Authority Updated:** Surgically removed template lines in `~/.shared-ai-skills/cto-cloud-qa/SKILL.md` that suggested `trace.playwright.dev (drag and drop trace.zip here)`. Replaced with canonical Zero-Download Live Web QA Dashboard reporting standard.
+  - **Codebase Scrub:**
+    - Updated `src/data/mockTelemetry.ts`: Pointed all project `traceUrl` entries directly to zero-download live web reports.
+    - Updated `src/components/LiveTelemetryShowcase.tsx`: Replaced badge `Playwright Trace.zip` with `Zero-Download Web Dashboard` and removed unzipping copy.
+    - Updated `src/components/ComposioDispatchPanel.tsx`: Defect payloads now route directly to the live web report URL rather than archive zips.
+    - Updated `functions/api/telemetry.ts` and `functions/api/composio.ts`: Default trace references now route to canonical web reports.
+    - Updated `.github/workflows/cloud-qa.yml`: Edge ingestion payload routes to live Playwright web report.
+- **Verification:** 100% PASS (6/6 gates green). Pushed to `origin/main` and deployed to Cloudflare Pages edge (`https://uiqa-platform.pages.dev/`).
+
+
 ### 2026-10-29: R2.0: Canonical Cloud QA CI/CD Pipeline & Hero Instant URL Scanner Shipped
 - **Shipped Scope (CTO Recommendation Execution):**
   - **Canonical Cloud QA Pipeline (`cto-cloud-qa` standard):**

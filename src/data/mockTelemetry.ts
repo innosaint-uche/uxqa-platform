@@ -84,7 +84,7 @@ export const mockAiraTelemetry: TelemetryRun = {
   },
   artifacts: {
     videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/aira/video_full_flow.webm',
-    traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/aira/trace.zip',
+    traceUrl: 'https://aura-academy-qa.pages.dev',
     reportUrl: 'https://aura-academy-qa.pages.dev',
     screenshotsCount: 18,
   },
@@ -169,7 +169,7 @@ export const mockNaijaGridTelemetry: TelemetryRun = {
   },
   artifacts: {
     videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/grid/audio_canvas_flow.webm',
-    traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/grid/trace.zip',
+    traceUrl: 'https://uiqa-platform.pages.dev/radoss/naija-grid/',
     reportUrl: 'https://uiqa-platform.pages.dev/radoss/naija-grid/',
     screenshotsCount: 12,
   },
@@ -244,7 +244,7 @@ export const mockDeepSyqueTelemetry: TelemetryRun = {
   },
   artifacts: {
     videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/deepsyque/assessment_flow.webm',
-    traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/deepsyque/trace.zip',
+    traceUrl: 'https://uiqa-platform.pages.dev/radoss/deepsyque/',
     reportUrl: 'https://uiqa-platform.pages.dev/radoss/deepsyque/',
     screenshotsCount: 8,
   },
@@ -309,7 +309,7 @@ export const mockEataliaTelemetry: TelemetryRun = {
   },
   artifacts: {
     videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/eatalia/menu_order_flow.webm',
-    traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/eatalia/trace.zip',
+    traceUrl: 'https://uiqa-platform.pages.dev/radoss/eatalia/',
     reportUrl: 'https://uiqa-platform.pages.dev/radoss/eatalia/',
     screenshotsCount: 6,
   },

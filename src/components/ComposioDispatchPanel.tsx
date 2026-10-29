@@ -36,7 +36,7 @@ export const ComposioDispatchPanel: React.FC<ComposioDispatchPanelProps> = ({
             projectSlug,
             commitSha,
             videoTimestamp: '00:14.2',
-            traceUrl: `https://uxqa-artifacts.radoss.agency/runs/${projectSlug}/trace.zip`,
+            traceUrl: `https://uiqa-platform.pages.dev/radoss/${projectSlug}/`,
             domSnippet: `<div class="banner-overlay" style="z-index: 9999"><button class="cta">Menu</button></div>`,
             personaRecommendation: 'Adjust z-index of toast overlay to 50 and ensure pointer-events: none when inactive.',
           },

@@ -370,11 +370,11 @@ export const LiveTelemetryShowcase: React.FC = () => {
                     <div className="flex items-center justify-between mb-4">
                       <span className="font-mono text-xs text-gray-900 dark:text-white font-semibold">Zero-Download Live Trace</span>
                       <span className="text-[10px] font-mono px-2 py-0.5 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-800">
-                        Playwright Trace.zip
+                        Zero-Download Web Dashboard
                       </span>
                     </div>
                     <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                      Inspect DOM snapshots, console logs, network requests, and action timings step-by-step in the official Playwright Trace Viewer without unzipping large local archives.
+                      Inspect DOM snapshots, console logs, network requests, and action timings directly in the live web report with zero downloads or archive extraction.
                     </p>
                     <div className="p-3 bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border font-mono text-xs text-gray-700 dark:text-gray-400 space-y-1">
                       <div>• Commit SHA: {data.commitSha}</div>
