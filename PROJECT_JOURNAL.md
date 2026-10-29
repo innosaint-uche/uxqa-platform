@@ -6,6 +6,26 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R1.7: Cloudflare Edge Infrastructure Provisioned, Production Deployed & GitHub Origin Linked
+- **Shipped Scope:**
+  - Provisioned Cloudflare D1 Database `uxqa-db` (`2b9403c7-57d7-4aeb-804e-30a8f0a97163` in region WEUR) and executed full schema migrations (8 queries executed, tables and indices verified).
+  - Provisioned Cloudflare R2 Object Storage Bucket `uxqa-artifacts` for zero-egress video recording and trace archive storage.
+  - Configured `wrangler.json` with edge bindings (`DB`, `ARTIFACTS`, `AI`) and Node.js compatibility enabled.
+  - Created Cloudflare Pages project `uiqa-platform` and executed production deployment:
+    - Production Edge Domain: `https://uiqa-platform.pages.dev/`
+    - Functions bundle uploaded and live.
+  - Linked GitHub Remote Origin:
+    - Created repository `https://github.com/innosaint-uche/uiqa-platform` under owner account `innosaint-uche`.
+    - Set `origin/main` upstream and established byte-for-byte local-remote parity.
+  - Executed Six-Probe Live Production Smoke:
+    - Probe 1: `GET /` -> HTTP/2 200 OK
+    - Probe 2: `GET /UXQA-app` -> HTTP/2 200 OK
+    - Probe 3: `GET /radoss/aira-academy/` -> HTTP/2 200 OK
+    - Probe 4: `GET /api/telemetry` -> HTTP/2 200 OK
+    - Probe 5: `POST /api/intake` -> 200 OK (verified written to remote D1 `uxqa-db`)
+    - Probe 6: `POST /api/composio` -> 200 OK (Linear defect dispatch verified)
+  - Verification: 100% PASS (6/6 gates green).
+
 ### 2026-10-29: R1.6: Project URL Parity Corrected, Composio External Tool Bus Shipped (Milestone 6)
 - **Corrections & Audit Resolution:**
   - Resolved report URL copy-paste anomaly in `src/data/mockTelemetry.ts`. `https://aura-academy-qa.pages.dev` is isolated strictly to AIRA Academy where its live Playwright dashboard resides. Corrected canonical edge routes for Naija Grid (`https://uiqa-platform.pages.dev/radoss/naija-grid/`), DeepSyque (`https://uiqa-platform.pages.dev/radoss/deepsyque/`), and Eatalia (`https://uiqa-platform.pages.dev/radoss/eatalia/`).
