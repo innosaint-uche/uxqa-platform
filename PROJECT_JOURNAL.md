@@ -6,6 +6,18 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R1.4: Multi-Tenant Workspace Router & Telemetry Hub Shipped (Milestone 4)
+- **Shipped Scope:**
+  - Engineered multi-tenant workspace telemetry view (`src/components/WorkspaceHub.tsx`) supporting path routing for `/:workspaceSlug/:projectSlug/`.
+  - Expanded mock telemetry registry (`src/data/mockTelemetry.ts`) covering all flagship Radoss projects:
+    - `radoss/aira-academy`: 69/69 passed (42.8s), Llama 3.2 curriculum visual checks, Llama 3.3 affiliate disclosure tone reviews.
+    - `radoss/naija-grid`: 48/48 passed (38.2s), procedural Web Audio transients, 1080x1920 canvas Plug Pass verification.
+    - `radoss/deepsyque`: 34/34 passed (29.5s), D1 fallback snapshot normaliser verification, zero client crash guarantee.
+    - `radoss/eatalia`: 28/28 passed (24.1s), Cloudflare proxy edge latency verification, meal combo responsive flow.
+  - Built Workspace Navigation Bar: breadcrumb path navigation, project selector with real-time pass rate badges, and one-click "Copy Report" button generating markdown test evidence for AI agents and founder changelogs.
+  - Wired client route listener in `src/App.tsx` handling `window.history.pushState` across showcase (`/` or `/UXQA-app`) and workspace views (`/:ws/:proj/`).
+  - Verification: 100% PASS (6/6 gates green).
+
 ### 2026-10-29: R1.3: Cloudflare Pages Edge Functions, D1 Schema & Intake Persistence Shipped
 - **Shipped Scope:**
   - Designed canonical Cloudflare D1 SQL relational schema (`migrations/0001_initial_schema.sql`): `waitlist_subscribers`, `workspaces`, `projects`, and `test_runs` with high-performance indices.
@@ -71,6 +83,6 @@
 | **M1: Core Authority & Blueprint** | `AGENTS.md`, `PROJECT_JOURNAL.md`, architecture and UX writing specs | Completed |
 | **M2: Landing Page & Micro-Interactions** | Silicon Valley minimal showcase, Swiss Grid, waitlist capture, zero heavy video | Completed |
 | **M3: Auth & Intake System** | OAuth gateway, `/login`, `/registration` questionnaire, Super Admin RBAC | Completed |
-| **M4: Telemetry Hub & R2 Storage** | Edge router for `/<workspace>/<project>/`, Playwright HTML report integration | Next |
-| **M5: Workers AI Persona & Copy Engine** | Vision screenshot auditing, copy readability analysis, simulated user feedback | Queued |
+| **M4: Telemetry Hub & R2 Storage** | Edge router for `/<workspace>/<project>/`, Playwright HTML report integration | Completed |
+| **M5: Workers AI Persona & Copy Engine** | Vision screenshot auditing, copy readability analysis, simulated user feedback | Next |
 | **M6: Composio & External Tool Bus** | Automated issue filing, CRM hooks, headless browser persona dispatch | Queued |
