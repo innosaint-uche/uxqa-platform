@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Play, Cloud, Sparkles } from 'lucide-react';
+import { InstantUrlScanner } from './InstantUrlScanner';
 
 interface HeroProps {
   onOpenWaitlist: () => void;
@@ -56,8 +57,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWaitlist, onScrollToTelemetry 
               </button>
             </div>
 
+            {/* Instant App URL Scanner */}
+            <InstantUrlScanner onOpenWaitlistWithUrl={onOpenWaitlist} />
+
             {/* Hardware Metrics Comparison Pill */}
-            <div className="mt-10 grid grid-cols-3 gap-3 max-w-xl">
+            <div className="mt-8 grid grid-cols-3 gap-3 max-w-xl">
               <div className="p-3 bg-gray-50 dark:bg-[#111215] border border-gray-200 dark:border-swiss-border">
                 <div className="text-[11px] font-mono text-gray-500 dark:text-swiss-muted uppercase">Local RAM Used</div>
                 <div className="mt-1 text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400">0 MB</div>

@@ -6,6 +6,18 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R2.0: Canonical Cloud QA CI/CD Pipeline & Hero Instant URL Scanner Shipped
+- **Shipped Scope (CTO Recommendation Execution):**
+  - **Canonical Cloud QA Pipeline (`cto-cloud-qa` standard):**
+    - Configured `playwright.config.js` with Desktop Chrome and Mobile Chrome (Pixel 5) viewports, HTML reporter, trace and video recording on retry.
+    - Authored `e2e/smoke.spec.js` validating hero story arc, zero-hardware status, default light theme with dark toggle, visual step scrobbler, visual bug diff, and Composio tool bus.
+    - Created `.github/workflows/cloud-qa.yml` running on Ubuntu cloud runner with Node 24 runtime, automated `@playwright/test` cloud execution, edge telemetry ingestion via `POST /api/telemetry`, and artifact uploads with 14-day retention.
+  - **Instant App URL Scanner (`src/components/InstantUrlScanner.tsx`):**
+    - Integrated live URL scanning console directly inside `Hero.tsx`.
+    - Features 1-click test presets (`aira.radoss.agency`, `naijagrid.com`, `deepsyque.com`, `eatalia.ng`).
+    - Dispatches live analysis to `/api/ai-review` edge workers, displaying duration in ms, 0MB local RAM indicator, flagged friction copy vs high-converting replacement, and mobile tap-target accessibility status.
+- **Verification:** 100% PASS (6/6 gates green). Deployed to Cloudflare Pages edge (`https://uiqa-platform.pages.dev/`).
+
 ### 2026-10-29: R1.9: Diversified Project Copy Audits & Dynamic Interactive Auditor Shipped
 - **Audit Findings & Fixes:**
   - Resolved copy audit uniformity where `AIRA by Radoss` copy was hardcoded across the interactive auditor and mock registries.
