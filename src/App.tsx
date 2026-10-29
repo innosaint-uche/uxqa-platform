@@ -6,6 +6,7 @@ import { VisualStepScrobbler } from './components/VisualStepScrobbler';
 import { VisualBugDiffViewer } from './components/VisualBugDiffViewer';
 import { LiveReportEmbed } from './components/LiveReportEmbed';
 import { MarketingAssetsGallery } from './components/MarketingAssetsGallery';
+import { ComposioDispatchPanel } from './components/ComposioDispatchPanel';
 import { Pillars } from './components/Pillars';
 import { CompetitorMatrix } from './components/CompetitorMatrix';
 import { Footer } from './components/Footer';
@@ -155,6 +156,20 @@ export function App() {
 
                 {/* 4. Auto-Extracted Marketing Collaterals Gallery */}
                 <MarketingAssetsGallery />
+
+                {/* 5. Composio External Tool Bus Dispatch */}
+                <div className="pt-8 border-t border-gray-200 dark:border-swiss-border">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="w-2.5 h-2.5 bg-purple-600"></span>
+                    <span className="font-mono text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+                      AUTONOMOUS DEFECT DISPATCH (COMPOSIO TOOL BUS)
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-6">
+                    Connect caught visual regressions and broken assertions directly to engineering workflows. One-click queue Linear tickets, GitHub issues, and Slack alerts with exact WebM video timestamps and trace links.
+                  </p>
+                  <ComposioDispatchPanel projectSlug="aira-academy" commitSha="c6a218f" />
+                </div>
               </div>
             </section>
 

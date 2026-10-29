@@ -62,7 +62,7 @@ export const ComposioDispatchPanel: React.FC<ComposioDispatchPanelProps> = ({
           message: `Ticket successfully queued via Composio tool bus.`,
         });
       }
-    } catch (err) {
+    } catch {
       setDispatchResult({
         success: true,
         dispatchId: `comp_sim_${Date.now()}`,
@@ -82,41 +82,41 @@ export const ComposioDispatchPanel: React.FC<ComposioDispatchPanelProps> = ({
   };
 
   return (
-    <div className="bg-[#111215] border border-swiss-border p-6 mb-8">
+    <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 shadow-sm mb-12 transition-colors">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-swiss-border gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-gray-200 dark:border-swiss-border gap-3">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400">
+          <div className="w-8 h-8 bg-purple-50 dark:bg-purple-950 border border-purple-300 dark:border-purple-800 flex items-center justify-center text-purple-600 dark:text-purple-400">
             <Share2 className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-display font-bold text-white text-base">
+            <h3 className="font-display font-bold text-gray-900 dark:text-white text-base">
               Composio External Tool Bus &amp; Defect Dispatch
             </h3>
-            <span className="text-[11px] font-mono text-swiss-muted">
+            <span className="text-[11px] font-mono text-gray-500 dark:text-swiss-muted">
               Auto-file Linear, GitHub, and Slack tickets with exact WebM video timestamps and traces
             </span>
           </div>
         </div>
 
         {/* Action Switcher */}
-        <div className="flex border border-swiss-border font-mono text-xs">
+        <div className="flex border border-gray-300 dark:border-swiss-border font-mono text-xs">
           <button
             onClick={() => setAction('linear_create_issue')}
             className={`px-3 py-1.5 transition-colors ${
               action === 'linear_create_issue'
                 ? 'bg-purple-600 text-white font-semibold'
-                : 'bg-[#0a0a0c] text-gray-400 hover:text-white'
+                : 'bg-gray-100 dark:bg-[#0a0a0c] text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
             }`}
           >
             Linear
           </button>
           <button
             onClick={() => setAction('github_create_issue')}
-            className={`px-3 py-1.5 transition-colors border-x border-swiss-border ${
+            className={`px-3 py-1.5 transition-colors border-x border-gray-300 dark:border-swiss-border ${
               action === 'github_create_issue'
                 ? 'bg-purple-600 text-white font-semibold'
-                : 'bg-[#0a0a0c] text-gray-400 hover:text-white'
+                : 'bg-gray-100 dark:bg-[#0a0a0c] text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
             }`}
           >
             GitHub Issues
@@ -126,7 +126,7 @@ export const ComposioDispatchPanel: React.FC<ComposioDispatchPanelProps> = ({
             className={`px-3 py-1.5 transition-colors ${
               action === 'slack_post_message'
                 ? 'bg-purple-600 text-white font-semibold'
-                : 'bg-[#0a0a0c] text-gray-400 hover:text-white'
+                : 'bg-gray-100 dark:bg-[#0a0a0c] text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
             }`}
           >
             Slack
@@ -138,21 +138,21 @@ export const ComposioDispatchPanel: React.FC<ComposioDispatchPanelProps> = ({
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
           <div className="md:col-span-8">
-            <label className="block text-xs font-mono text-gray-400 mb-1">Defect Summary / Ticket Title</label>
+            <label className="block text-xs font-mono text-gray-700 dark:text-gray-400 mb-1">Defect Summary / Ticket Title</label>
             <input
               type="text"
               value={defectTitle}
               onChange={(e) => setDefectTitle(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
+              className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-xs text-gray-900 dark:text-white font-mono focus:outline-none focus:border-purple-500"
             />
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-xs font-mono text-gray-400 mb-1">Severity</label>
+            <label className="block text-xs font-mono text-gray-700 dark:text-gray-400 mb-1">Severity</label>
             <select
               value={severity}
               onChange={(e) => setSeverity(e.target.value as any)}
-              className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
+              className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-xs text-gray-900 dark:text-white font-mono focus:outline-none focus:border-purple-500"
             >
               <option value="critical">CRITICAL</option>
               <option value="high">HIGH</option>
@@ -165,7 +165,7 @@ export const ComposioDispatchPanel: React.FC<ComposioDispatchPanelProps> = ({
             <button
               onClick={handleDispatch}
               disabled={isDispatching}
-              className="w-full py-2 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-mono font-semibold flex items-center justify-center space-x-1.5 transition-colors shadow-[0_0_12px_rgba(147,51,234,0.3)]"
+              className="w-full py-2 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-mono font-semibold flex items-center justify-center space-x-1.5 transition-colors shadow-sm"
             >
               {isDispatching ? (
                 <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -181,24 +181,24 @@ export const ComposioDispatchPanel: React.FC<ComposioDispatchPanelProps> = ({
 
         {/* Dispatch Confirmation Card */}
         {dispatchResult && (
-          <div className="mt-4 p-4 bg-[#0a0a0c] border border-swiss-border animate-fade-in">
+          <div className="mt-4 p-4 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border animate-fade-in">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span className="font-mono text-xs text-white font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="font-mono text-xs text-gray-900 dark:text-white font-semibold">
                   {dispatchResult.message}
                 </span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 bg-purple-950 text-purple-300 border border-purple-800">
+              <span className="text-[10px] font-mono px-2 py-0.5 bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-800 font-bold">
                 DISPATCH ID: {dispatchResult.dispatchId}
               </span>
             </div>
 
-            <div className="p-3 bg-[#111215] border border-swiss-border font-mono text-xs text-gray-300 space-y-1">
-              <div><span className="text-swiss-muted">Target:</span> {dispatchResult.externalTicket?.destination}</div>
-              <div><span className="text-swiss-muted">Title:</span> {dispatchResult.externalTicket?.ticketPayload?.title}</div>
-              <div className="text-[11px] text-gray-400 pt-1 border-t border-swiss-border">
-                Video timestamp <span className="text-blue-400 font-bold">00:14.2</span>, Playwright trace archive, and DOM snippet automatically attached.
+            <div className="p-3 bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border font-mono text-xs text-gray-700 dark:text-gray-300 space-y-1">
+              <div><span className="text-gray-500 dark:text-swiss-muted">Target:</span> {dispatchResult.externalTicket?.destination}</div>
+              <div><span className="text-gray-500 dark:text-swiss-muted">Title:</span> {dispatchResult.externalTicket?.ticketPayload?.title}</div>
+              <div className="text-[11px] text-gray-500 dark:text-gray-400 pt-1 border-t border-gray-200 dark:border-swiss-border">
+                Video timestamp <span className="text-blue-600 dark:text-blue-400 font-bold">00:14.2</span>, Playwright trace archive, and DOM snippet automatically attached.
               </div>
             </div>
           </div>
