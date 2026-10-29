@@ -22,9 +22,42 @@ export interface TelemetryRun {
     traceUrl: string;
     reportUrl: string;
     screenshotsCount: number;
+    videoDuration?: string;
+    videoSteps?: VideoActionStep[];
+    screenshots?: TestScreenshot[];
+    files?: TestArtifactFile[];
   };
   personaFeedback: PersonaReview[];
   uxCopyAudit: CopyAuditItem[];
+}
+
+export interface TestArtifactFile {
+  name: string;
+  category: 'Video' | 'DOM Snapshot' | 'Network HAR' | 'Console Logs' | 'Metrics JSON' | 'Screenshot';
+  size: string;
+  path: string;
+  downloadUrl: string;
+  description: string;
+}
+
+export interface TestScreenshot {
+  id: string;
+  title: string;
+  viewport: string;
+  dimensions: string;
+  timestamp: string;
+  sizeKb: number;
+  url: string;
+  tag: string;
+  domSelector?: string;
+}
+
+export interface VideoActionStep {
+  timestamp: string;
+  seconds: number;
+  label: string;
+  action: string;
+  status: 'passed' | 'failed';
 }
 
 export interface PersonaReview {

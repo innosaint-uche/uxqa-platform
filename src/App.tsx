@@ -60,12 +60,18 @@ export function App() {
         setIsWaitlistOpen(true);
       }
 
-      // Check if route matches :workspaceSlug/:projectSlug
+      // Check if route matches :workspaceSlug/:projectSlug or :workspaceSlug
       if (segments.length >= 2 && segments[0] !== 'uxqa-app' && segments[0] !== 'api') {
         setCurrentRoute({
           type: 'workspace',
           workspaceSlug: segments[0],
           projectSlug: segments[1],
+        });
+      } else if (segments.length === 1 && (segments[0] === 'radoss' || segments[0] === 'workspaces')) {
+        setCurrentRoute({
+          type: 'workspace',
+          workspaceSlug: 'radoss',
+          projectSlug: undefined,
         });
       } else {
         setCurrentRoute({ type: 'showcase' });
@@ -78,8 +84,8 @@ export function App() {
     return () => window.removeEventListener('popstate', parseRoute);
   }, []);
 
-  const navigateToWorkspace = (workspaceSlug = 'radoss', projectSlug = 'aira-academy') => {
-    const newPath = `/${workspaceSlug}/${projectSlug}/`;
+  const navigateToWorkspace = (workspaceSlug = 'radoss', projectSlug?: string) => {
+    const newPath = projectSlug ? `/${workspaceSlug}/${projectSlug}/` : `/${workspaceSlug}/`;
     window.history.pushState({}, '', newPath);
     setCurrentRoute({
       type: 'workspace',
@@ -109,6 +115,7 @@ export function App() {
         <WorkspaceHub
           workspaceSlug={currentRoute.workspaceSlug}
           projectSlug={currentRoute.projectSlug}
+          initialView={currentRoute.projectSlug ? 'project' : 'workspace'}
           onNavigateHome={navigateToHome}
           onSelectProject={(ws, proj) => navigateToWorkspace(ws, proj)}
         />
@@ -120,6 +127,7 @@ export function App() {
             onToggleTheme={toggleTheme}
             onOpenWaitlist={() => setIsWaitlistOpen(true)}
             onNavigateLogin={() => setIsLoginOpen(true)}
+            onNavigateWorkspace={() => navigateToWorkspace('radoss')}
           />
 
           <main className="flex-1">

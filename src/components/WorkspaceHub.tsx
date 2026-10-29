@@ -5,25 +5,24 @@ import {
   mockAiraTelemetry 
 } from '../data/mockTelemetry';
 import { 
-  CheckCircle2, 
   ExternalLink, 
-  Play, 
-  Sparkles, 
-  Activity, 
-  Layers, 
-  TrendingUp, 
+  CheckCircle2, 
+  FolderGit2, 
   Copy, 
   Check, 
   ArrowLeft, 
   ShieldCheck,
-  FolderGit2
+  LayoutDashboard
 } from 'lucide-react';
 import { InteractiveAiAuditor } from './InteractiveAiAuditor';
 import { ComposioDispatchPanel } from './ComposioDispatchPanel';
+import { ArtifactMediaExplorer } from './ArtifactMediaExplorer';
+import { WorkspaceDashboard } from './WorkspaceDashboard';
 
 interface WorkspaceHubProps {
   workspaceSlug?: string;
   projectSlug?: string;
+  initialView?: 'workspace' | 'project';
   onNavigateHome: () => void;
   onSelectProject: (wsSlug: string, projSlug: string) => void;
 }
@@ -31,9 +30,16 @@ interface WorkspaceHubProps {
 export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
   workspaceSlug = 'radoss',
   projectSlug = 'aira-academy',
+  initialView,
   onNavigateHome,
   onSelectProject,
 }) => {
+  // Determine if we start in workspace dashboard view or project view
+  const [currentView, setCurrentView] = useState<'workspace' | 'project'>(() => {
+    if (initialView) return initialView;
+    return projectSlug ? 'project' : 'workspace';
+  });
+
   const [activeTab, setActiveTab] = useState<'overview' | 'personas' | 'copy' | 'artifacts'>('overview');
   const [copied, setCopied] = useState(false);
 
@@ -51,7 +57,6 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
 - **Runner:** ${telemetry.runner.type} (${telemetry.runner.nodeVersion})
 - **Developer Local RAM Consumed:** ${telemetry.runner.localRamUsedMb} MB (100% Cloud Execution)
 - **Live QA Dashboard:** ${telemetry.artifacts.reportUrl}
-- **Trace Viewer:** ${telemetry.artifacts.traceUrl}
 - **Full Video Recording:** ${telemetry.artifacts.videoUrl}`;
 
     navigator.clipboard.writeText(report);
@@ -59,8 +64,19 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
     setTimeout(() => setCopied(false), 2500);
   };
 
+  const handleSelectProjectFromWorkspace = (wsSlug: string, projSlug: string) => {
+    onSelectProject(wsSlug, projSlug);
+    setCurrentView('project');
+  };
+
+  const handleSwitchToWorkspaceDashboard = () => {
+    window.history.pushState({}, '', `/${currentWorkspace.slug}`);
+    setCurrentView('workspace');
+  };
+
   return (
     <div className="min-h-screen bg-[#f8f9fa] dark:bg-[#0a0a0c] text-gray-900 dark:text-gray-100 flex flex-col font-sans transition-colors">
+      
       {/* Top Breadcrumb & Project Bar */}
       <div className="bg-white dark:bg-[#111215] border-b border-gray-200 dark:border-swiss-border sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -74,23 +90,52 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
               <ArrowLeft className="w-4 h-4" />
             </button>
 
+            {/* Clickable, Functional Breadcrumb Hierarchy */}
             <div className="flex items-center space-x-2 font-mono text-xs">
-              <span className="text-gray-500 dark:text-swiss-muted hidden sm:inline">workspaces</span>
-              <span className="text-gray-500 dark:text-swiss-muted hidden sm:inline">/</span>
-              <span className="px-2 py-0.5 bg-blue-50 dark:bg-[#181a20] border border-blue-200 dark:border-swiss-border text-blue-700 dark:text-blue-400 font-semibold">
-                {currentWorkspace.slug}
-              </span>
-              <span className="text-gray-500 dark:text-swiss-muted">/</span>
-              <span className="text-gray-900 dark:text-white font-bold tracking-tight">
-                {currentProject.slug}
-              </span>
+              <button
+                onClick={handleSwitchToWorkspaceDashboard}
+                className="text-gray-500 hover:text-gray-900 dark:text-swiss-muted dark:hover:text-white transition-colors hidden sm:inline"
+              >
+                workspaces
+              </button>
+              <span className="text-gray-400 dark:text-swiss-muted hidden sm:inline">/</span>
+              
+              <button
+                onClick={handleSwitchToWorkspaceDashboard}
+                className={`px-2 py-0.5 border text-xs font-semibold transition-colors flex items-center space-x-1 ${
+                  currentView === 'workspace'
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'bg-blue-50 dark:bg-[#181a20] border-blue-200 dark:border-swiss-border text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-[#20232b]'
+                }`}
+                title="Click to view full Workspace Dashboard"
+              >
+                <span>{currentWorkspace.slug}</span>
+              </button>
+
+              {currentView === 'project' && (
+                <>
+                  <span className="text-gray-400 dark:text-swiss-muted">/</span>
+                  <span className="text-gray-900 dark:text-white font-bold tracking-tight">
+                    {currentProject.slug}
+                  </span>
+                </>
+              )}
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
+            {/* View Mode Toggle: Workspace Dashboard vs Project Telemetry */}
+            <button
+              onClick={() => setCurrentView(currentView === 'workspace' ? 'project' : 'workspace')}
+              className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-[#181a20] dark:hover:bg-[#20232b] text-xs font-mono text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-swiss-border flex items-center space-x-1.5 transition-colors"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span>{currentView === 'workspace' ? 'View Project Telemetry' : 'Workspace Overview'}</span>
+            </button>
+
             <button
               onClick={handleCopyMarkdownReport}
-              className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-[#181a20] dark:hover:bg-[#20232b] text-xs font-mono text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-swiss-border flex items-center space-x-1.5 transition-colors"
+              className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-[#181a20] dark:hover:bg-[#20232b] text-xs font-mono text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-swiss-border hidden sm:flex items-center space-x-1.5 transition-colors"
             >
               {copied ? (
                 <>
@@ -118,14 +163,29 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
 
         </div>
 
-        {/* Project Selector Bar */}
+        {/* Project Selector Bar (always accessible across the workspace) */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto border-t border-gray-200 dark:border-swiss-border bg-gray-50 dark:bg-[#0d0e12]">
+          <button
+            onClick={handleSwitchToWorkspaceDashboard}
+            className={`px-4 py-2.5 text-xs font-mono flex items-center space-x-2 border-r border-gray-200 dark:border-swiss-border whitespace-nowrap transition-colors ${
+              currentView === 'workspace'
+                ? 'bg-white dark:bg-[#111215] text-blue-600 dark:text-blue-400 border-b-2 border-b-blue-600 font-bold'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#14161c]'
+            }`}
+          >
+            <LayoutDashboard className="w-3.5 h-3.5" />
+            <span>Workspace Overview ({currentWorkspace.projects.length} Projects)</span>
+          </button>
+
           {currentWorkspace.projects.map((proj) => {
-            const isSelected = proj.slug === currentProject.slug;
+            const isSelected = currentView === 'project' && proj.slug === currentProject.slug;
             return (
               <button
                 key={proj.slug}
-                onClick={() => onSelectProject(currentWorkspace.slug, proj.slug)}
+                onClick={() => {
+                  onSelectProject(currentWorkspace.slug, proj.slug);
+                  setCurrentView('project');
+                }}
                 className={`px-4 py-2.5 text-xs font-mono flex items-center space-x-2 border-r border-gray-200 dark:border-swiss-border whitespace-nowrap transition-colors ${
                   isSelected
                     ? 'bg-white dark:bg-[#111215] text-gray-900 dark:text-white border-b-2 border-b-blue-600 font-semibold'
@@ -146,328 +206,299 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
       {/* Main Workspace Body */}
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
-        {/* Project Header Card */}
-        <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 mb-8 shadow-sm">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center space-x-2 text-xs font-mono text-gray-500 dark:text-swiss-muted mb-1">
-                <span>Repository: {currentProject.repo}</span>
-                <span>•</span>
-                <span className="text-emerald-600 dark:text-emerald-400 flex items-center space-x-1 font-semibold">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>100% Cloud Verified</span>
-                </span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-display font-extrabold text-gray-900 dark:text-white">
-                {currentProject.name}
-              </h1>
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {currentProject.description}
-              </p>
-            </div>
-
-            <div className="flex items-center space-x-3 font-mono text-xs">
-              <a
-                href={currentProject.productionUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-[#181a20] dark:hover:bg-[#20232b] text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-swiss-border flex items-center space-x-1.5 transition-colors"
-              >
-                <span>Live Domain</span>
-                <ExternalLink className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              </a>
-            </div>
-          </div>
-
-          {/* Quick Metrics Strip */}
-          <div className="mt-6 pt-5 border-t border-gray-200 dark:border-swiss-border grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 text-xs font-mono">
-            <div>
-              <div className="text-gray-500 dark:text-swiss-muted text-[10px] uppercase">Telemetry Run</div>
-              <div className="mt-1 text-blue-600 dark:text-blue-400 font-bold truncate">{telemetry.id}</div>
-            </div>
-            <div>
-              <div className="text-gray-500 dark:text-swiss-muted text-[10px] uppercase">Suite Outcome</div>
-              <div className="mt-1 text-emerald-600 dark:text-emerald-400 font-bold flex items-center space-x-1">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>{telemetry.passedCount}/{telemetry.totalTests} PASSED</span>
-              </div>
-            </div>
-            <div>
-              <div className="text-gray-500 dark:text-swiss-muted text-[10px] uppercase">Execution Time</div>
-              <div className="mt-1 text-gray-900 dark:text-white font-bold">{telemetry.durationSeconds}s</div>
-            </div>
-            <div>
-              <div className="text-gray-500 dark:text-swiss-muted text-[10px] uppercase">Local RAM Consumed</div>
-              <div className="mt-1 text-emerald-600 dark:text-emerald-400 font-bold">0 MB</div>
-            </div>
-            <div>
-              <div className="text-gray-500 dark:text-swiss-muted text-[10px] uppercase">Cloud Runner Node</div>
-              <div className="mt-1 text-gray-900 dark:text-gray-200 font-bold">{telemetry.runner.nodeVersion}</div>
-            </div>
-            <div>
-              <div className="text-gray-500 dark:text-swiss-muted text-[10px] uppercase">Cloud Artifacts</div>
-              <div className="mt-1 text-purple-600 dark:text-purple-400 font-bold">Stored in R2 ($0)</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Interactive Workers AI Auditor */}
-        <InteractiveAiAuditor projectName={currentProject.name} />
-
-        {/* Composio External Tool Bus Dispatch */}
-        <ComposioDispatchPanel projectSlug={currentProject.slug} commitSha={telemetry.commitSha} />
-
-        {/* Detailed Tabs Container */}
-        <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border shadow-sm">
-          
-          {/* Navigation Tabs */}
-          <div className="flex border-b border-gray-200 dark:border-swiss-border overflow-x-auto bg-gray-50 dark:bg-[#0d0e11]">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-5 py-3 text-xs sm:text-sm font-mono flex items-center space-x-2 border-r border-gray-200 dark:border-swiss-border whitespace-nowrap transition-colors ${
-                activeTab === 'overview'
-                  ? 'bg-white dark:bg-[#111215] text-gray-900 dark:text-white border-b-2 border-b-blue-600 font-semibold'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#15171d]'
-              }`}
-            >
-              <Activity className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>1. Run Overview &amp; Probes</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('personas')}
-              className={`px-5 py-3 text-xs sm:text-sm font-mono flex items-center space-x-2 border-r border-gray-200 dark:border-swiss-border whitespace-nowrap transition-colors ${
-                activeTab === 'personas'
-                  ? 'bg-white dark:bg-[#111215] text-gray-900 dark:text-white border-b-2 border-b-blue-600 font-semibold'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#15171d]'
-              }`}
-            >
-              <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span>2. Simulated Personas ({telemetry.personaFeedback.length})</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('copy')}
-              className={`px-5 py-3 text-xs sm:text-sm font-mono flex items-center space-x-2 border-r border-gray-200 dark:border-swiss-border whitespace-nowrap transition-colors ${
-                activeTab === 'copy'
-                  ? 'bg-white dark:bg-[#111215] text-gray-900 dark:text-white border-b-2 border-b-blue-600 font-semibold'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#15171d]'
-              }`}
-            >
-              <TrendingUp className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              <span>3. UX Copy &amp; Conversion ({telemetry.uxCopyAudit.length})</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('artifacts')}
-              className={`px-5 py-3 text-xs sm:text-sm font-mono flex items-center space-x-2 whitespace-nowrap transition-colors ${
-                activeTab === 'artifacts'
-                  ? 'bg-white dark:bg-[#111215] text-gray-900 dark:text-white border-b-2 border-b-blue-600 font-semibold'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#15171d]'
-              }`}
-            >
-              <Layers className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span>4. Cloud Video &amp; Traces</span>
-            </button>
-          </div>
-
-          {/* Tab 1: Overview */}
-          {activeTab === 'overview' && (
-            <div className="p-6 sm:p-8 space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                <div className="lg:col-span-7 space-y-4">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-gray-500 dark:text-swiss-muted font-bold">
-                    SUITE ASSERTION BREAKDOWN
-                  </h4>
-
-                  <div className="space-y-3 font-mono text-xs">
-                    <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-gray-800 dark:text-gray-200">Core Functional User Flows</span>
-                      </div>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                        {telemetry.passedCount}/{telemetry.totalTests} PASSED
-                      </span>
-                    </div>
-
-                    <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-gray-800 dark:text-gray-200">Responsive Layout &amp; Viewport Overflow</span>
-                      </div>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">0 OVERFLOWS</span>
-                    </div>
-
-                    <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-gray-800 dark:text-gray-200">Authentication &amp; State Fallback Probes</span>
-                      </div>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">CLEAN</span>
-                    </div>
+        {/* VIEW 1: Full Workspace Command Center */}
+        {currentView === 'workspace' ? (
+          <WorkspaceDashboard
+            workspace={currentWorkspace}
+            telemetryMap={mockTelemetryRegistry}
+            onSelectProject={handleSelectProjectFromWorkspace}
+            onNavigateHome={onNavigateHome}
+          />
+        ) : (
+          /* VIEW 2: Sub-Project Telemetry Hub */
+          <div>
+            {/* Project Header Card */}
+            <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 mb-8 shadow-sm">
+              <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-200 dark:border-swiss-border gap-4">
+                <div>
+                  <div className="flex items-center space-x-2 text-xs font-mono text-blue-600 dark:text-blue-400 font-semibold mb-1">
+                    <span>{currentWorkspace.name}</span>
+                    <span>•</span>
+                    <span>{currentProject.repo}</span>
                   </div>
+                  <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    {currentProject.name}
+                  </h1>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl leading-relaxed">
+                    {currentProject.description}
+                  </p>
+                </div>
 
-                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pt-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-mono text-xs font-bold flex items-center space-x-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>SUITE PASSED ({telemetry.passedCount}/{telemetry.totalTests})</span>
+                  </span>
+                  <a
+                    href={currentProject.productionUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-[#181a20] dark:hover:bg-[#20232b] text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-swiss-border font-mono text-xs flex items-center space-x-1.5 transition-colors"
+                  >
+                    <span>Live App</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Quick Metrics Bar */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
+                <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border">
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Commit SHA</div>
+                  <div className="text-sm font-mono font-bold text-gray-900 dark:text-white mt-0.5 truncate">
+                    {telemetry.commitSha}
+                  </div>
+                </div>
+                <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border">
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Run Duration</div>
+                  <div className="text-sm font-mono font-bold text-gray-900 dark:text-white mt-0.5">
+                    {telemetry.durationSeconds}s
+                  </div>
+                </div>
+                <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border">
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Dev RAM Toll</div>
+                  <div className="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                    0 MB (100% Cloud)
+                  </div>
+                </div>
+                <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border">
+                  <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Visual Proof</div>
+                  <div className="text-sm font-mono font-bold text-blue-600 dark:text-blue-400 mt-0.5">
+                    {telemetry.artifacts.screenshotsCount} Captures Verified
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Composio External Tool Bus Dispatch */}
+            <div className="mb-8">
+              <ComposioDispatchPanel projectSlug={currentProject.slug} commitSha={telemetry.commitSha} />
+            </div>
+
+            {/* Tabs Navigation */}
+            <div className="border-b border-gray-200 dark:border-swiss-border mb-6">
+              <div className="flex space-x-6 font-mono text-xs">
+                <button
+                  onClick={() => setActiveTab('overview')}
+                  className={`pb-3 font-semibold transition-colors relative ${
+                    activeTab === 'overview'
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  1. Execution Telemetry
+                </button>
+                <button
+                  onClick={() => setActiveTab('personas')}
+                  className={`pb-3 font-semibold transition-colors relative ${
+                    activeTab === 'personas'
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  2. Simulated Personas ({telemetry.personaFeedback.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('copy')}
+                  className={`pb-3 font-semibold transition-colors relative ${
+                    activeTab === 'copy'
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  3. UX Copy &amp; Conversion ({telemetry.uxCopyAudit.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('artifacts')}
+                  className={`pb-3 font-semibold transition-colors relative ${
+                    activeTab === 'artifacts'
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  4. Media &amp; Artifacts Explorer ({telemetry.artifacts.screenshotsCount} Captures)
+                </button>
+              </div>
+            </div>
+
+            {/* Tab 1: Execution Telemetry */}
+            {activeTab === 'overview' && (
+              <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 space-y-6">
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono mb-2">
+                    Autonomous Cloud Execution Spec
+                  </h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
                     Executed autonomously on Ubuntu cloud runners via <code className="text-blue-600 dark:text-blue-400 font-mono">cto-cloud-qa</code>. Traces and videos were dispatched to Cloudflare R2 with zero egress fees.
                   </p>
                 </div>
 
-                <div className="lg:col-span-5 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-gray-500 dark:text-swiss-muted mb-4 font-bold">
-                    ZERO HARDWARE LOAD TELEMETRY
-                  </h4>
-
-                  <div className="space-y-4 font-mono text-xs">
-                    <div>
-                      <div className="flex justify-between text-gray-600 dark:text-gray-400 mb-1">
-                        <span>Developer Machine Local RAM:</span>
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">0 MB</span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-[#181a20] h-2">
-                        <div className="bg-emerald-500 h-2" style={{ width: '0%' }}></div>
-                      </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border font-mono text-xs space-y-2">
+                    <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Infrastructure Tier</div>
+                    <div className="text-gray-800 dark:text-gray-200 flex justify-between">
+                      <span>Runner Host:</span>
+                      <span className="text-gray-900 dark:text-white font-semibold">{telemetry.runner.type}</span>
                     </div>
-
-                    <div>
-                      <div className="flex justify-between text-gray-600 dark:text-gray-400 mb-1">
-                        <span>Cloud Runner Memory Allocation:</span>
-                        <span className="text-blue-600 dark:text-blue-400 font-bold">1,620 MB</span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-[#181a20] h-2">
-                        <div className="bg-blue-500 h-2" style={{ width: '23%' }}></div>
-                      </div>
+                    <div className="text-gray-800 dark:text-gray-200 flex justify-between">
+                      <span>Runtime:</span>
+                      <span className="text-gray-900 dark:text-white font-semibold">Node {telemetry.runner.nodeVersion}</span>
                     </div>
+                    <div className="text-gray-800 dark:text-gray-200 flex justify-between">
+                      <span>Local RAM Toll:</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">{telemetry.runner.localRamUsedMb} MB</span>
+                    </div>
+                  </div>
 
-                    <div className="pt-4 border-t border-gray-200 dark:border-swiss-border text-[11px] text-gray-500 dark:text-swiss-muted">
-                      Your local developer machine (whether Mac, Windows, or Linux) remains completely responsive with zero memory throttling.
+                  <div className="p-4 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border font-mono text-xs space-y-2">
+                    <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Edge Storage Verification</div>
+                    <div className="text-gray-800 dark:text-gray-200 flex justify-between">
+                      <span>Storage Tier:</span>
+                      <span className="text-purple-600 dark:text-purple-400 font-semibold">Cloudflare R2</span>
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-200 flex justify-between">
+                      <span>Egress Cost:</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">$0.00 (Guaranteed)</span>
+                    </div>
+                    <div className="text-gray-800 dark:text-gray-200 flex justify-between">
+                      <span>Live Report:</span>
+                      <span className="text-blue-600 dark:text-blue-400 truncate max-w-[200px]">{telemetry.artifacts.reportUrl}</span>
                     </div>
                   </div>
                 </div>
 
+                <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-xs font-mono text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span>All {telemetry.totalTests} tests passed cleanly. Zero client crashes or broken selectors observed.</span>
+                  </div>
+                  <a
+                    href={telemetry.artifacts.reportUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-emerald-900 dark:hover:text-white transition-colors"
+                  >
+                    View Interactive Suite
+                  </a>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Tab 2: Personas */}
-          {activeTab === 'personas' && (
-            <div className="p-6 sm:p-8 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {telemetry.personaFeedback.map((p, idx) => (
-                  <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-display font-bold text-gray-900 dark:text-white text-sm">{p.persona}</span>
-                        <span className={`text-[10px] font-mono px-2 py-0.5 border ${
-                          p.verdict === 'Approved'
-                            ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800 font-semibold'
-                            : 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800 font-semibold'
-                        }`}>
-                          {p.verdict} ({p.score}/100)
-                        </span>
-                      </div>
-                      <div className="text-[11px] font-mono text-gray-500 dark:text-swiss-muted mb-3">
-                        Model: {p.model}
-                      </div>
-                      <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                        "{p.critique}"
-                      </p>
-                    </div>
-
-                    <div className="pt-3 border-t border-gray-200 dark:border-swiss-border">
-                      <div className="text-[10px] font-mono uppercase text-gray-500 dark:text-swiss-muted mb-1 font-bold">Recommendations:</div>
-                      {p.recommendations.map((rec, rIdx) => (
-                        <div key={rIdx} className="text-xs text-blue-700 dark:text-blue-300 font-mono">
-                          • {rec}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Tab 3: Copy */}
-          {activeTab === 'copy' && (
-            <div className="p-6 sm:p-8 space-y-4">
-              <div className="divide-y divide-gray-200 dark:divide-swiss-border border border-gray-200 dark:border-swiss-border">
-                {telemetry.uxCopyAudit.map((item, idx) => (
-                  <div key={idx} className="p-4 bg-gray-50 dark:bg-[#0a0a0c] grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
-                    <div className="lg:col-span-3 font-mono text-xs text-gray-500 dark:text-swiss-muted">
-                      <div>{item.selector}</div>
-                      <div className="mt-1 text-[11px] text-gray-600 dark:text-gray-400">{item.readabilityGrade}</div>
-                    </div>
-                    <div className="lg:col-span-4">
-                      <div className="text-[10px] font-mono uppercase text-gray-500 dark:text-swiss-muted">Original Text</div>
-                      <div className="text-xs text-red-600 dark:text-red-300 line-through mt-0.5">{item.originalText}</div>
-                    </div>
-                    <div className="lg:col-span-5">
-                      <div className="flex items-center justify-between">
-                        <div className="text-[10px] font-mono uppercase text-emerald-600 dark:text-emerald-400 font-semibold">
-                          Recommended Copy
-                        </div>
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 font-bold">
-                          {item.expectedConversionLift}
-                        </span>
-                      </div>
-                      <div className="text-xs font-semibold text-gray-900 dark:text-white mt-0.5">{item.recommendedImprovement}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Tab 4: Artifacts */}
-          {activeTab === 'artifacts' && (
-            <div className="p-6 sm:p-8 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <div className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono text-xs text-gray-900 dark:text-white font-semibold">Recorded User Journey</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-800">
-                      Cloudflare R2 ($0 Egress)
-                    </span>
-                  </div>
-                  <div className="aspect-video bg-gray-100 dark:bg-[#14161c] border border-gray-200 dark:border-swiss-border flex flex-col items-center justify-center p-6 text-center group">
-                    <div className="w-14 h-14 bg-blue-600/10 dark:bg-blue-600/20 border border-blue-500/40 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                      <Play className="w-6 h-6 text-blue-600 dark:text-blue-400 fill-blue-600 dark:fill-blue-400" />
-                    </div>
-                    <div className="font-mono text-xs text-gray-900 dark:text-white font-medium">{currentProject.slug}-full-run.webm</div>
-                  </div>
+            {/* Tab 2: Simulated Personas */}
+            {activeTab === 'personas' && (
+              <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 space-y-6">
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono mb-2">
+                    Autonomous Customer Archetypes (Workers AI)
+                  </h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
+                    Simulated using Cloudflare Workers AI free models (<code className="text-blue-600 dark:text-blue-400 font-mono">@cf/qwen/qwen2.5-coder-32b-instruct</code> &amp; <code className="text-blue-600 dark:text-blue-400 font-mono">@cf/meta/llama-3.2-11b-vision-instruct</code>).
+                  </p>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 flex flex-col justify-between">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {telemetry.personaFeedback.map((fb, idx) => (
+                    <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="font-mono text-xs font-bold text-gray-900 dark:text-white">{fb.persona}</span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 font-bold">
+                            Score: {fb.score}/100
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                          "{fb.critique}"
+                        </p>
+                      </div>
+
+                      {fb.recommendations && fb.recommendations.length > 0 && (
+                        <div className="pt-3 border-t border-gray-200 dark:border-swiss-border font-mono text-xs">
+                          <div className="text-[10px] uppercase text-gray-500 dark:text-swiss-muted mb-1 font-bold">Remediation:</div>
+                          {fb.recommendations.map((rec, i) => (
+                            <div key={i} className="text-blue-700 dark:text-blue-300">• {rec}</div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tab 3: UX Copy & Conversion */}
+            {activeTab === 'copy' && (
+              <div className="space-y-8">
+                {/* Interactive Dynamic UI Auditor */}
+                <InteractiveAiAuditor projectName={currentProject.name} />
+
+                {/* Pre-calibrated Project Audit Items */}
+                <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 space-y-6">
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-xs text-gray-900 dark:text-white font-semibold">Zero-Download Playwright Trace</span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-800">
-                        Interactive Trace
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                      Step through actions, inspect DOM snapshots, verify network requests and inspect timing waterfalls.
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono mb-2">
+                      Friction Points &amp; Copy Audit (Llama 3.3 70B)
+                    </h3>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
+                      Readability and conversion friction scoring evaluated across high-value funnel CTAs.
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-200 dark:border-swiss-border">
-                    <a
-                      href={telemetry.artifacts.reportUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs font-mono flex items-center justify-center space-x-2 transition-colors shadow-sm"
-                    >
-                      <span>Open Live Cloudflare Pages Report</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {telemetry.uxCopyAudit.map((item, idx) => (
+                      <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 space-y-4">
+                        <div>
+                          <div className="text-[10px] font-mono text-gray-500 dark:text-swiss-muted uppercase tracking-wider mb-1">Target Element</div>
+                          <code className="text-xs font-mono text-blue-700 dark:text-blue-400 break-all">{item.selector}</code>
+                        </div>
+
+                        <div>
+                          <div className="text-[10px] font-mono text-gray-500 dark:text-swiss-muted uppercase tracking-wider mb-1">Current Copy</div>
+                          <div className="text-xs text-gray-800 dark:text-gray-200 bg-white dark:bg-[#111215] p-2.5 border border-gray-200 dark:border-swiss-border">
+                            "{item.originalText}"
+                          </div>
+                        </div>
+
+                        <div className="pt-2 border-t border-gray-200 dark:border-swiss-border">
+                          <div className="flex items-center justify-between text-[11px] font-mono mb-1">
+                            <span className="text-gray-500">Readability:</span>
+                            <span className="font-semibold text-gray-900 dark:text-white">{item.readabilityGrade}</span>
+                          </div>
+                          <div className="flex items-center justify-between text-[11px] font-mono">
+                            <span className="text-gray-500">Conversion Impact:</span>
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">{item.expectedConversionLift}</span>
+                          </div>
+                        </div>
+
+                        <div className="p-3 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900">
+                          <div className="text-[10px] font-mono uppercase text-blue-800 dark:text-blue-300 font-bold flex items-center space-x-1">
+                            <CheckCircle2 className="w-3 h-3" />
+                            <span>Recommended Replacement</span>
+                          </div>
+                          <div className="text-xs font-semibold text-gray-900 dark:text-white mt-0.5">{item.recommendedImprovement}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-
               </div>
-            </div>
-          )}
+            )}
 
-        </div>
+            {/* Tab 4: Comprehensive Media & Artifacts Explorer */}
+            {activeTab === 'artifacts' && (
+              <ArtifactMediaExplorer telemetry={telemetry} />
+            )}
+
+          </div>
+        )}
 
       </main>
     </div>

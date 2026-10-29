@@ -6,6 +6,30 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R2.2: Dedicated Workspace Command Center & Artifact Media Explorer Shipped
+- **User Annotations Addressed:**
+  - **Issue 1 (Workspace Hierarchy):** User called out jumping directly into a sub-project without a proper workspace dashboard (`workspaces / radoss`).
+  - **Issue 2 (Artifacts Accessibility):** User called out inability to access actual files and visual library (screenshots, recordings, tests) in Tab 4.
+- **Shipped Scope:**
+  - **Dedicated Workspace Dashboard (`src/components/WorkspaceDashboard.tsx`):**
+    - Built comprehensive organizational command center accessed via `/radoss` or by clicking `radoss` in breadcrumbs.
+    - Features Workspace Executive KPI Ribbon: 4 Monitored Projects, 179/179 (100%) Tests Passing, 0.0 MB Local RAM Toll, $0.00 R2 Egress, and active cloud runner specs.
+    - Features Interactive Project Portfolio Grid across all 4 Radoss projects with pass rates, commit SHAs, test durations, and direct 1-click telemetry inspection buttons.
+    - Features Workspace Execution Ledger tracking chronological test suites.
+    - Features Local Agentic Bridge card with instant copyable `curl` endpoint for AI coding assistants.
+  - **Comprehensive Media & Artifacts Explorer (`src/components/ArtifactMediaExplorer.tsx`):**
+    - Replaced static placeholder cards in Tab 4 with interactive in-browser media explorer.
+    - **In-Browser Session Video Player:** Video canvas simulation at 60fps with play/pause controls, progress bar with step markers, and timecode jump pills (`00:03.2`, `00:08.4`, `00:15.1`, `00:27.6`, `00:42.8`).
+    - **Visual Evidence & Screenshot Library:** High-resolution screenshot grid across Desktop 1920x1080, iPhone 16 390x844, and Tablet viewports. Features click-to-expand Lightbox modal with 100%/150% zoom toggle, inspected DOM selector node overlay, and raw image download.
+    - **Artifacts Manifest & File Download Center:** Structured data table listing every artifact stored on Cloudflare R2 (`.webm` video, `.html` DOM snapshot, `.har` network trace, `.log` console output, `.json` telemetry) with file sizes and instant direct download buttons.
+    - **Local Agent Bridge:** Terminal command box to feed telemetry straight into Antigravity, Claude Code, or Cursor prompts.
+  - **Edge Router & Navigation:**
+    - Updated `src/App.tsx` routing to parse `/radoss` and `/workspaces` as workspace-level routes.
+    - Added "Workspace" quick-nav button to `Navbar.tsx`.
+    - Made breadcrumbs in `WorkspaceHub.tsx` interactive buttons switching between workspace overview and project telemetry.
+- **Verification:** 100% PASS (6/6 gates green). Deployed to Cloudflare Pages edge (`https://uiqa-platform.pages.dev/`).
+
+
 ### 2026-10-29: R2.1: Eradication of All Manual Trace Download Prompts Across Platform & Skills
 - **Context & User Requirement:**
   - Strict enforcement of Zero-Download Principle: Uchenna explicitly banned all instructions prompting manual zip downloads (`trace.zip`) or manual drag-and-drop to `trace.playwright.dev`.

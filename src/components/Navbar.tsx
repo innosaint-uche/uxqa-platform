@@ -6,6 +6,7 @@ interface NavbarProps {
   onToggleTheme: () => void;
   onOpenWaitlist: () => void;
   onNavigateLogin: () => void;
+  onNavigateWorkspace?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -13,6 +14,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleTheme,
   onOpenWaitlist,
   onNavigateLogin,
+  onNavigateWorkspace,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/90 dark:bg-swiss-black/90 backdrop-blur-md border-b border-gray-200 dark:border-swiss-border transition-colors">
@@ -59,6 +61,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
+          {onNavigateWorkspace && (
+            <button
+              onClick={onNavigateWorkspace}
+              className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors hidden sm:inline-block px-2 font-mono"
+            >
+              Workspace
+            </button>
+          )}
           <a
             href="#telemetry"
             className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors hidden sm:inline-block px-2"
