@@ -197,7 +197,23 @@ export const mockNaijaGridTelemetry: TelemetryRun = {
   ],
   uxCopyAudit: [
     {
-      selector: '.theme-toggle > span',
+      selector: '.hero-cta > .btn-generate',
+      originalText: 'Synthesize Procedural Audio & Sacred Geometry',
+      readabilityGrade: 'Post-graduate (Flesch 28)',
+      sentiment: 'High Friction',
+      recommendedImprovement: 'Generate My Free Plug Pass',
+      expectedConversionLift: '+27.6% creation rate',
+    },
+    {
+      selector: '.canvas-controls > .resolution-tag',
+      originalText: 'Export 1080x1920 raster frame buffer',
+      readabilityGrade: 'College (Flesch 38)',
+      sentiment: 'Confusing',
+      recommendedImprovement: 'Download for WhatsApp Status (HD)',
+      expectedConversionLift: '+31.2% social shares',
+    },
+    {
+      selector: '.audio-bar > .mode-label',
       originalText: 'Toggle Visual Modes',
       readabilityGrade: 'Grade 6 (Flesch 78)',
       sentiment: 'Neutral',
@@ -246,12 +262,28 @@ export const mockDeepSyqueTelemetry: TelemetryRun = {
   ],
   uxCopyAudit: [
     {
+      selector: '.hero-action > .assessment-cta',
+      originalText: 'Commence Psychometric Cognitive Evaluation',
+      readabilityGrade: 'Post-graduate (Flesch 19)',
+      sentiment: 'High Friction',
+      recommendedImprovement: 'Take Free 5-Min Career Quiz',
+      expectedConversionLift: '+34.8% start rate',
+    },
+    {
       selector: '.recovery-banner > p',
       originalText: 'Diagnostic state refreshed from cloud database',
       readabilityGrade: 'High School (Flesch 55)',
       sentiment: 'Clear',
       recommendedImprovement: 'Your progress is saved securely. Ready to continue.',
-      expectedConversionLift: '+12.5% recovery rate',
+      expectedConversionLift: '+19.4% completion rate',
+    },
+    {
+      selector: '.pricing-card > .tier-subtext',
+      originalText: 'Access institutional-grade benchmark matrices',
+      readabilityGrade: 'College (Flesch 36)',
+      sentiment: 'Neutral',
+      recommendedImprovement: 'See salary & hiring benchmarks for your exact role',
+      expectedConversionLift: '+22.1% upgrade rate',
     },
   ],
 };
@@ -295,12 +327,28 @@ export const mockEataliaTelemetry: TelemetryRun = {
   ],
   uxCopyAudit: [
     {
+      selector: '.menu-header > .cta-order',
+      originalText: 'Initialize Remote Food Order Protocol',
+      readabilityGrade: 'College (Flesch 32)',
+      sentiment: 'High Friction',
+      recommendedImprovement: 'Order Hot Meals Now (15-Min Delivery)',
+      expectedConversionLift: '+29.3% order conversions',
+    },
+    {
       selector: '.checkout-btn',
       originalText: 'Proceed to Payment Gateway',
       readabilityGrade: 'Grade 7 (Flesch 72)',
       sentiment: 'Neutral',
-      recommendedImprovement: 'Order Now & Pay on Delivery / Card',
-      expectedConversionLift: '+19.3% checkout conversions',
+      recommendedImprovement: 'Pay with Card, Bank Transfer or Cash on Delivery',
+      expectedConversionLift: '+21.5% checkout completion',
+    },
+    {
+      selector: '.delivery-tracker > .status-badge',
+      originalText: 'Kitchen packet dispatch queued at origin',
+      readabilityGrade: 'Grade 9 (Flesch 62)',
+      sentiment: 'Confusing',
+      recommendedImprovement: 'Chef is preparing your fresh meal in Yaba',
+      expectedConversionLift: '+18.0% satisfaction rating',
     },
   ],
 };
