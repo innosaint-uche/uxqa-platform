@@ -6,6 +6,22 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R1.8: Visual Evidence Overhaul & Default Light Theme Architecture Shipped
+- **Shipped Scope:**
+  - **Light Theme as Default:**
+    - Set default `<html lang="en" class="light">` with persistent theme state stored in `localStorage` (`uxqa-theme`).
+    - Configured Sun/Moon interactive theme toggle in `Navbar.tsx` switching between light and dark modes.
+    - Updated `src/index.css` with light-mode Swiss Grid lines (`rgba(0,0,0,0.05)`), light scrollbars, and enforced `--radius: 0px !important`.
+    - Adapted all core UI components (`Hero`, `LiveTelemetryShowcase`, `Pillars`, `CompetitorMatrix`, `Footer`, `WorkspaceHub`, `OnboardingModal`, `LoginModal`) with clean light/dark adaptive classes (`bg-white dark:bg-[#111215]`, `border-gray-200 dark:border-swiss-border`, `text-gray-900 dark:text-white`).
+  - **Visual Evidence Overhaul (Replacing Synthetic Placeholders):**
+    - `VisualStepScrobbler.tsx`: Interactive 4-step execution scrobbler with Play/Pause simulation, real Playwright action signatures, elapsed millisecond timings, and dynamic DOM mockups (Curriculum Tracks, Day 1-3 Lessons, YouTube link probes, Vision Persona overlay).
+    - `VisualBugDiffViewer.tsx`: Interactive Before/After visual regression comparison demonstrating mobile viewport tap target obscured by floating toast vs fixed unobscured checkout button on iPhone 16 viewport.
+    - `LiveReportEmbed.tsx`: Living iframe embed of `https://aura-academy-qa.pages.dev` with expand/contract and reload controls, allowing instant verification with zero downloads.
+    - `MarketingAssetsGallery.tsx`: Auto-extracted marketing collaterals featuring iPhone 16 framed mockup for AIRA Academy and 1080x1920 WhatsApp Status Plug pass for Naija Grid with 1-click snippet copy.
+  - **Compliance & Deployment:**
+    - Passed 6/6 `npm run verify` gates (Authority files, anti-bloat, zero em dashes, 0px radius, TypeScript typecheck, Cloudflare Pages Functions typecheck).
+    - Live deployed to Cloudflare Pages: `https://uiqa-platform.pages.dev/`.
+
 ### 2026-10-29: R1.7: Cloudflare Edge Infrastructure Provisioned, Production Deployed & GitHub Origin Linked
 - **Shipped Scope:**
   - Provisioned Cloudflare D1 Database `uxqa-db` (`2b9403c7-57d7-4aeb-804e-30a8f0a97163` in region WEUR) and executed full schema migrations (8 queries executed, tables and indices verified).

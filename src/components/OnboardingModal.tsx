@@ -58,13 +58,13 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-[#111215] border border-swiss-border w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl transition-colors">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors"
+          className="absolute top-5 right-5 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -72,15 +72,15 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
         {!isSubmitted ? (
           <div>
             {/* Progress header */}
-            <div className="flex items-center justify-between pb-4 mb-6 border-b border-swiss-border font-mono text-xs">
-              <span className="text-blue-400 font-semibold uppercase">
+            <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-200 dark:border-swiss-border font-mono text-xs">
+              <span className="text-blue-600 dark:text-blue-400 font-semibold uppercase">
                 STEP {step} OF 6: INTAKE &amp; CALIBRATION
               </span>
-              <span className="text-swiss-muted">Zero-Hardware Cloud Engine</span>
+              <span className="text-gray-500 dark:text-swiss-muted">Zero-Hardware Cloud Engine</span>
             </div>
 
             {submitError && (
-              <div className="mb-4 p-3 bg-red-950/40 border border-red-800 text-red-300 text-xs">
+              <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-800 text-red-700 dark:text-red-300 text-xs">
                 {submitError}
               </div>
             )}
@@ -88,40 +88,40 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
             {/* Step 1: Identity & Role */}
             {step === 1 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-white">Who is building?</h3>
-                <p className="text-xs text-gray-400">
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">Who is building?</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Introduce yourself and your organization so our personas tailor their feedback style.
                 </p>
 
                 <div className="space-y-3 pt-2">
                   <div>
-                    <label className="block text-xs font-mono text-gray-300 mb-1">Full Name</label>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
                     <input
                       type="text"
                       placeholder="e.g. Alex Morgan"
                       value={formData.fullName || ''}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 font-sans"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-gray-300 mb-1">Work Email</label>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Work Email</label>
                     <input
                       type="email"
                       placeholder="alex@company.com"
                       value={formData.workEmail || ''}
                       onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
-                      className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 font-sans"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-gray-300 mb-1">Primary Role</label>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Primary Role</label>
                     <select
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value as any })}
-                      className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 font-sans"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
                     >
                       <option value="Vibe Coder">Vibe Coder (AI-Assisted Builder)</option>
                       <option value="Solo Founder">Solo Founder / Technical Founder</option>
@@ -137,42 +137,42 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
             {/* Step 2: Product & Repository */}
             {step === 2 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-white">What are you testing?</h3>
-                <p className="text-xs text-gray-400">
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">What are you testing?</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Provide your product details so we can configure the remote Cloudflare runners.
                 </p>
 
                 <div className="space-y-3 pt-2">
                   <div>
-                    <label className="block text-xs font-mono text-gray-300 mb-1">Product Name</label>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Product Name</label>
                     <input
                       type="text"
                       placeholder="e.g. HyperFlow Studio"
                       value={formData.productName || ''}
                       onChange={(e) => setFormData({ ...formData, productName: e.target.value })}
-                      className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-gray-300 mb-1">Live URL or Staging Domain</label>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Live URL or Staging Domain</label>
                     <input
                       type="url"
                       placeholder="https://app.yourdomain.com"
                       value={formData.productionUrl || ''}
                       onChange={(e) => setFormData({ ...formData, productionUrl: e.target.value })}
-                      className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-gray-300 mb-1">Repository Stack</label>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Repository Stack</label>
                     <input
                       type="text"
                       placeholder="e.g. Next.js 15, Vite + React, Remix, Svelte"
                       value={formData.techStack || ''}
                       onChange={(e) => setFormData({ ...formData, techStack: e.target.value })}
-                      className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -182,8 +182,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
             {/* Step 3: Target Persona */}
             {step === 3 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-white">Who is your ideal customer?</h3>
-                <p className="text-xs text-gray-400">
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">Who is your ideal customer?</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Our Workers AI models will simulate this profile during exploratory UI testing.
                 </p>
 
@@ -206,8 +206,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                       key={idx}
                       className={`block p-4 border cursor-pointer transition-colors ${
                         formData.targetPersona === p.label
-                          ? 'bg-blue-950/30 border-blue-500 text-white'
-                          : 'bg-[#0a0a0c] border-swiss-border text-gray-300 hover:border-gray-600'
+                          ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white'
+                          : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600'
                       }`}
                     >
                       <div className="flex items-center space-x-3">
@@ -216,11 +216,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                           name="targetPersona"
                           checked={formData.targetPersona === p.label}
                           onChange={() => setFormData({ ...formData, targetPersona: p.label as any })}
-                          className="accent-blue-500"
+                          className="accent-blue-600"
                         />
                         <div>
-                          <div className="text-sm font-semibold text-white">{p.label}</div>
-                          <div className="text-xs text-gray-400 mt-0.5">{p.desc}</div>
+                          <div className="text-sm font-semibold text-gray-900 dark:text-white">{p.label}</div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{p.desc}</div>
                         </div>
                       </div>
                     </label>
@@ -232,9 +232,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
             {/* Step 4: Top QA Pain Points */}
             {step === 4 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-white">What keeps you up at night?</h3>
-                <p className="text-xs text-gray-400">
-                  Select your primary operational headache so we prioritize the right assertions.
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">What keeps you up at night?</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Select your primary operational headache so we prioritise the right assertions.
                 </p>
 
                 <div className="space-y-2.5 pt-2">
@@ -249,8 +249,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                       key={idx}
                       className={`block p-3 border cursor-pointer text-xs transition-colors ${
                         formData.topPainPoint === pain
-                          ? 'bg-blue-950/30 border-blue-500 text-white font-medium'
-                          : 'bg-[#0a0a0c] border-swiss-border text-gray-300 hover:border-gray-600'
+                          ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white font-medium'
+                          : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600'
                       }`}
                     >
                       <div className="flex items-center space-x-2.5">
@@ -259,7 +259,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                           name="topPainPoint"
                           checked={formData.topPainPoint === pain}
                           onChange={() => setFormData({ ...formData, topPainPoint: pain })}
-                          className="accent-blue-500"
+                          className="accent-blue-600"
                         />
                         <span>{pain}</span>
                       </div>
@@ -272,8 +272,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
             {/* Step 5: Testing Rigor */}
             {step === 5 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-white">What review rigor do you need?</h3>
-                <p className="text-xs text-gray-400">
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">What review rigor do you need?</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   Select the level of scrutiny applied on every git push.
                 </p>
 
@@ -296,8 +296,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                       key={idx}
                       className={`block p-4 border cursor-pointer transition-colors ${
                         formData.reviewRigor === r.label
-                          ? 'bg-blue-950/30 border-blue-500 text-white'
-                          : 'bg-[#0a0a0c] border-swiss-border text-gray-300 hover:border-gray-600'
+                          ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white'
+                          : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600'
                       }`}
                     >
                       <div className="flex items-center space-x-3">
@@ -306,11 +306,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                           name="reviewRigor"
                           checked={formData.reviewRigor === r.label}
                           onChange={() => setFormData({ ...formData, reviewRigor: r.label as any })}
-                          className="accent-blue-500"
+                          className="accent-blue-600"
                         />
                         <div>
-                          <div className="text-sm font-semibold text-white">{r.label}</div>
-                          <div className="text-xs text-gray-400 mt-0.5">{r.desc}</div>
+                          <div className="text-sm font-semibold text-gray-900 dark:text-white">{r.label}</div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{r.desc}</div>
                         </div>
                       </div>
                     </label>
@@ -322,18 +322,18 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
             {/* Step 6: Referral & Cohort Activation */}
             {step === 6 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-white">How did you hear about UXQA?</h3>
-                <p className="text-xs text-gray-400">
-                  Final step to prioritize your invitation to the private founder cohort.
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">How did you hear about UXQA?</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Final step to prioritise your invitation to the private founder cohort.
                 </p>
 
                 <div className="space-y-3 pt-2">
                   <div>
-                    <label className="block text-xs font-mono text-gray-300 mb-1">Referral Source</label>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Referral Source</label>
                     <select
                       value={formData.referralSource}
                       onChange={(e) => setFormData({ ...formData, referralSource: e.target.value })}
-                      className="w-full bg-[#0a0a0c] border border-swiss-border px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
                     >
                       <option value="Radoss Ecosystem">Radoss Ecosystem (AIRA, Naija Grid)</option>
                       <option value="Twitter / X">Twitter / X (@UchennaInnocent)</option>
@@ -343,8 +343,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                     </select>
                   </div>
 
-                  <div className="p-4 bg-[#0a0a0c] border border-swiss-border font-mono text-xs text-gray-400 space-y-1">
-                    <div className="text-emerald-400 font-semibold">Priority Cohort Benefits:</div>
+                  <div className="p-4 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border font-mono text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                    <div className="text-emerald-600 dark:text-emerald-400 font-semibold">Priority Cohort Benefits:</div>
                     <div>• 100% Free Cloudflare R2 Egress Storage</div>
                     <div>• 10,000 Free Daily Workers AI Neurons</div>
                     <div>• Sub-90-second automated Playwright checks</div>
@@ -354,11 +354,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
             )}
 
             {/* Footer Buttons */}
-            <div className="mt-8 pt-4 border-t border-swiss-border flex items-center justify-between">
+            <div className="mt-8 pt-4 border-t border-gray-200 dark:border-swiss-border flex items-center justify-between">
               {step > 1 ? (
                 <button
                   onClick={handleBack}
-                  className="px-4 py-2 bg-[#0a0a0c] hover:bg-[#181a20] text-gray-400 hover:text-white border border-swiss-border text-xs font-mono transition-colors"
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-[#0a0a0c] dark:hover:bg-[#181a20] text-gray-700 hover:text-black dark:text-gray-400 dark:hover:text-white border border-gray-300 dark:border-swiss-border text-xs font-mono transition-colors"
                 >
                   Back
                 </button>
@@ -369,7 +369,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
               <button
                 onClick={handleNext}
                 disabled={isSubmitting}
-                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs sm:text-sm font-semibold flex items-center space-x-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)]"
+                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs sm:text-sm font-semibold flex items-center space-x-2 transition-all shadow-sm"
               >
                 <span>
                   {isSubmitting
@@ -385,29 +385,29 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
         ) : (
           /* Confirmation State */
           <div className="py-8 text-center space-y-4">
-            <div className="w-16 h-16 bg-emerald-950/60 border border-emerald-800 text-emerald-400 flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
-            <h3 className="text-2xl font-display font-extrabold text-white">
+            <h3 className="text-2xl font-display font-extrabold text-gray-900 dark:text-white">
               Calibration Profile Accepted.
             </h3>
 
-            <p className="text-sm text-gray-300 max-w-md mx-auto leading-relaxed">
-              Thank you, <span className="font-semibold text-white">{formData.fullName || 'Builder'}</span>. Your testing profile for <span className="text-blue-400 font-mono">{formData.productName || 'your project'}</span> is queued for Cohort 1 activation.
+            <p className="text-sm text-gray-600 dark:text-gray-300 max-w-md mx-auto leading-relaxed">
+              Thank you, <span className="font-semibold text-gray-900 dark:text-white">{formData.fullName || 'Builder'}</span>. Your testing profile for <span className="text-blue-600 dark:text-blue-400 font-mono font-bold">{formData.productName || 'your project'}</span> is queued for Cohort 1 activation.
             </p>
 
-            <div className="p-4 bg-[#0a0a0c] border border-swiss-border max-w-md mx-auto font-mono text-xs text-gray-400 text-left space-y-1.5">
-              <div><span className="text-swiss-muted">Status:</span> <span className="text-emerald-400 font-bold">Priority Waitlist Confirmed</span></div>
-              <div><span className="text-swiss-muted">Role:</span> {formData.role}</div>
-              <div><span className="text-swiss-muted">Testing Rigor:</span> {formData.reviewRigor}</div>
-              <div><span className="text-swiss-muted">Local Hardware Load:</span> 0 MB RAM</div>
+            <div className="p-4 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border max-w-md mx-auto font-mono text-xs text-gray-600 dark:text-gray-400 text-left space-y-1.5">
+              <div><span className="text-gray-500 dark:text-swiss-muted">Status:</span> <span className="text-emerald-600 dark:text-emerald-400 font-bold">Priority Waitlist Confirmed</span></div>
+              <div><span className="text-gray-500 dark:text-swiss-muted">Role:</span> {formData.role}</div>
+              <div><span className="text-gray-500 dark:text-swiss-muted">Testing Rigor:</span> {formData.reviewRigor}</div>
+              <div><span className="text-gray-500 dark:text-swiss-muted">Local Hardware Load:</span> 0 MB RAM</div>
             </div>
 
             <div className="pt-4">
               <button
                 onClick={onClose}
-                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors"
+                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors shadow-sm"
               >
                 Return to Workspace
               </button>

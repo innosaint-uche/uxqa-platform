@@ -11,7 +11,7 @@ export const Pillars: React.FC<PillarsProps> = ({ onOpenWaitlist }) => {
       id: 'pillar-cloud',
       icon: Cpu,
       badge: 'Hardware Equality',
-      badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-800',
+      badgeColor: 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800',
       title: 'Universal Zero-Hardware Cloud QA',
       headline: 'Institutional-grade testing. Zero local CPU or RAM load.',
       description:
@@ -27,15 +27,15 @@ export const Pillars: React.FC<PillarsProps> = ({ onOpenWaitlist }) => {
       id: 'pillar-personas',
       icon: Users,
       badge: 'Workers AI Inferred',
-      badgeColor: 'text-blue-400 bg-blue-950/60 border-blue-800',
+      badgeColor: 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border-blue-300 dark:border-blue-800',
       title: 'Simulated AI User Personas',
       headline: 'Your product tested through the eyes of real customer archetypes.',
       description:
-        'Do not rely on binary pass/fail assertions. Our specialized AI persona agents simulate non-technical beginners, skeptical buyers, and speed power users to catch usability roadblocks, hidden menus, and confusing checkout hesitations before your real users churn.',
+        'Do not rely on binary pass/fail assertions. Our specialised AI persona agents simulate non-technical beginners, sceptical buyers, and speed power users to catch usability roadblocks, hidden menus, and confusing checkout hesitations before your real users churn.',
       bulletPoints: [
         'The Non-Technical Novice: Catches confusing jargon and hidden navigation',
         'The Speed Power User: Validates rapid keybindings and responsive layout integrity',
-        'The Skeptical Buyer: Evaluates checkout friction, guarantees, and pricing clarity',
+        'The Sceptical Buyer: Evaluates checkout friction, guarantees, and pricing clarity',
         'Sub-90-second AI persona dispatch on every git push'
       ]
     },
@@ -43,7 +43,7 @@ export const Pillars: React.FC<PillarsProps> = ({ onOpenWaitlist }) => {
       id: 'pillar-copy',
       icon: FileText,
       badge: 'Conversion Engine',
-      badgeColor: 'text-purple-400 bg-purple-950/60 border-purple-800',
+      badgeColor: 'text-purple-700 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/60 border-purple-300 dark:border-purple-800',
       title: 'Automated UX Copy & Conversion Audits',
       headline: 'Catch conversion leaks and confusing microcopy before you launch.',
       description:
@@ -59,7 +59,7 @@ export const Pillars: React.FC<PillarsProps> = ({ onOpenWaitlist }) => {
       id: 'pillar-marketing',
       icon: ImageIcon,
       badge: 'Growth Collaterals',
-      badgeColor: 'text-amber-400 bg-amber-950/60 border-amber-800',
+      badgeColor: 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-300 dark:border-amber-800',
       title: 'Instant Marketing & App Store Collateral Extraction',
       headline: 'Pristine product screenshots and demo clips on every push.',
       description:
@@ -74,18 +74,18 @@ export const Pillars: React.FC<PillarsProps> = ({ onOpenWaitlist }) => {
   ];
 
   return (
-    <section id="pillars" className="py-20 md:py-28 bg-[#0c0e12] border-b border-swiss-border">
+    <section id="pillars" className="py-20 md:py-28 bg-gray-50/50 dark:bg-[#0c0e12] border-b border-gray-200 dark:border-swiss-border transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
-          <div className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-2">
+          <div className="text-xs font-mono uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 font-bold">
             THE FOUR PILLARS OF UXQA
           </div>
-          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-gray-900 dark:text-white tracking-tight">
             Engineered for Modern Vibe Coders &amp; Fast-Moving Teams.
           </h2>
-          <p className="mt-4 text-base text-gray-400 leading-relaxed">
+          <p className="mt-4 text-base text-gray-600 dark:text-gray-400 leading-relaxed">
             Eliminating the £50,000 human QA salary requirement while protecting your laptop from
             brutal browser crashes and memory exhaustion.
           </p>
@@ -98,33 +98,33 @@ export const Pillars: React.FC<PillarsProps> = ({ onOpenWaitlist }) => {
             return (
               <div
                 key={pillar.id}
-                className="bg-[#111215] border border-swiss-border p-6 sm:p-8 hover:border-blue-500/70 transition-all flex flex-col justify-between"
+                className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 hover:border-blue-500/70 transition-all flex flex-col justify-between shadow-sm"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 bg-[#181a20] border border-swiss-border flex items-center justify-center text-blue-400">
+                    <div className="w-12 h-12 bg-gray-100 dark:bg-[#181a20] border border-gray-300 dark:border-swiss-border flex items-center justify-center text-blue-600 dark:text-blue-400">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className={`text-[11px] font-mono uppercase px-2.5 py-1 border ${pillar.badgeColor}`}>
+                    <span className={`text-[11px] font-mono uppercase px-2.5 py-1 border font-semibold ${pillar.badgeColor}`}>
                       {pillar.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-display font-bold text-white mb-2">
+                  <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white mb-2">
                     {pillar.title}
                   </h3>
-                  <div className="text-sm font-semibold text-blue-400 mb-4">
+                  <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-4">
                     {pillar.headline}
                   </div>
-                  <p className="text-sm text-gray-400 leading-relaxed mb-6">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
                     {pillar.description}
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-swiss-border space-y-2.5">
+                <div className="pt-6 border-t border-gray-200 dark:border-swiss-border space-y-2.5">
                   {pillar.bulletPoints.map((point, idx) => (
-                    <div key={idx} className="flex items-start space-x-2 text-xs text-gray-300">
-                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" />
+                    <div key={idx} className="flex items-start space-x-2 text-xs text-gray-700 dark:text-gray-300">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                       <span>{point}</span>
                     </div>
                   ))}
@@ -135,9 +135,9 @@ export const Pillars: React.FC<PillarsProps> = ({ onOpenWaitlist }) => {
         </div>
 
         {/* Bottom Callout */}
-        <div className="mt-12 p-6 bg-[#111215] border border-swiss-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-gray-300">
-            <span className="font-semibold text-white">Need custom persona calibration for your industry?</span>{' '}
+        <div className="mt-12 p-6 bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+          <div className="text-sm text-gray-700 dark:text-gray-300">
+            <span className="font-semibold text-gray-900 dark:text-white">Need custom persona calibration for your industry?</span>{' '}
             Our onboarding questionnaire custom-tunes Llama 3.2 and Qwen 2.5 models to your target demographic.
           </div>
           <button

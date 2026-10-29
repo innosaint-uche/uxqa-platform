@@ -12,31 +12,54 @@
   }
 
   body {
+    background-color: #f8f9fa;
+    color: #0f172a;
+    overflow-x: hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  .dark body {
     background-color: #0a0a0c;
     color: #f3f4f6;
-    overflow-x: hidden;
   }
 }
 
-/* Custom Swiss Grid Lines */
+/* Light Swiss Grid Lines */
 .swiss-grid-pattern {
-  background-size: 40px 40px;
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+}
+
+.dark .swiss-grid-pattern {
+  background-size: 32px 32px;
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
+/* Light Swiss Borders and Cards */
 .swiss-border {
+  border: 1px solid #e2e8f0;
+}
+
+.dark .swiss-border {
   border: 1px solid #22242a;
 }
 
 .swiss-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .swiss-card {
   background-color: #111215;
   border: 1px solid #22242a;
 }
 
 .swiss-card:hover {
-  border-color: #3b82f6;
+  border-color: #2563eb;
 }
 
 /* Custom Scrollbar */
@@ -46,13 +69,21 @@
 }
 
 ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dark ::-webkit-scrollbar-track {
   background: #0a0a0c;
 }
 
 ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+.dark ::-webkit-scrollbar-thumb {
   background: #22242a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3b82f6;
+  background: #2563eb;
 }
