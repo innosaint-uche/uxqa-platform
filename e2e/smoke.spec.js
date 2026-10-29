@@ -5,7 +5,7 @@ test.describe('UXQA Production Smoke & Design System Suite', () => {
     await page.goto('/');
     await expect(page).toHaveTitle(/UXQA/);
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.locator('text=0 MB')).toBeVisible();
+    await expect(page.locator('text=0 MB').first()).toBeVisible();
   });
 
   test('light theme default renders and theme toggle functions', async ({ page }) => {
@@ -43,7 +43,7 @@ test.describe('UXQA Production Smoke & Design System Suite', () => {
 
   test('workspace console renders multi-project telemetry', async ({ page }) => {
     await page.goto('/radoss/aira-academy/');
-    await expect(page.locator('text=AIRA by Radoss')).toBeVisible();
-    await expect(page.locator('text=69/69 PASSED')).toBeVisible();
+    await expect(page.locator('text=AIRA by Radoss').first()).toBeVisible();
+    await expect(page.locator('text=69/69 PASSED').first()).toBeVisible();
   });
 });
