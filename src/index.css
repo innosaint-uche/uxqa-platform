@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0px;
+  }
+
+  * {
+    border-radius: 0px !important;
+  }
+
+  body {
+    background-color: #0a0a0c;
+    color: #f3f4f6;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Swiss Grid Lines */
+.swiss-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.swiss-border {
+  border: 1px solid #22242a;
+}
+
+.swiss-card {
+  background-color: #111215;
+  border: 1px solid #22242a;
+}
+
+.swiss-card:hover {
+  border-color: #3b82f6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #22242a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
