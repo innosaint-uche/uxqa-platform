@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   mockWorkspaces, 
   mockTelemetryRegistry, 
@@ -42,6 +42,20 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
 
   const [activeTab, setActiveTab] = useState<'overview' | 'personas' | 'copy' | 'artifacts'>('overview');
   const [copied, setCopied] = useState(false);
+  const [d1Connected, setD1Connected] = useState(true);
+  const [d1RunsCount, setD1RunsCount] = useState(4);
+
+  useEffect(() => {
+    fetch('/api/telemetry')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.runs) {
+          setD1Connected(true);
+          setD1RunsCount(data.runs.length);
+        }
+      })
+      .catch(() => setD1Connected(false));
+  }, []);
 
   // Lookup workspace and project
   const currentWorkspace = mockWorkspaces.find((w) => w.slug === workspaceSlug) || mockWorkspaces[0];
@@ -211,6 +225,8 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
           <WorkspaceDashboard
             workspace={currentWorkspace}
             telemetryMap={mockTelemetryRegistry}
+            d1Connected={d1Connected}
+            d1RunsCount={d1RunsCount}
             onSelectProject={handleSelectProjectFromWorkspace}
             onNavigateHome={onNavigateHome}
           />

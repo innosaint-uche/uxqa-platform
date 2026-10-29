@@ -3,27 +3,52 @@ import { Env, TelemetryPayload } from '../types';
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { env, request } = context;
   const url = new URL(request.url);
-  const projectId = url.searchParams.get('projectId') || 'aira-academy';
+  const targetId = url.searchParams.get('projectId') || url.searchParams.get('project');
 
   try {
     if (env.DB) {
-      const { results } = await env.DB.prepare(`
+      let query = `
         SELECT tr.*, p.name as project_name, p.slug as project_slug, w.slug as workspace_slug
         FROM test_runs tr
         LEFT JOIN projects p ON tr.project_id = p.id
         LEFT JOIN workspaces w ON p.workspace_id = w.id
-        WHERE p.slug = ? OR tr.project_id = ?
-        ORDER BY tr.created_at DESC
-        LIMIT 10
-      `).bind(projectId, projectId).all();
+      `;
+
+      let statement;
+      if (targetId && targetId !== 'all') {
+        query += ` WHERE p.slug = ? OR tr.project_id = ? ORDER BY tr.created_at DESC LIMIT 20`;
+        statement = env.DB.prepare(query).bind(targetId, targetId);
+      } else {
+        query += ` ORDER BY tr.created_at DESC LIMIT 50`;
+        statement = env.DB.prepare(query);
+      }
+
+      const { results } = await statement.all();
 
       if (results && results.length > 0) {
         return new Response(
           JSON.stringify({
             success: true,
             source: 'cloudflare-d1',
+            count: results.length,
             runs: results.map((r: any) => ({
-              ...r,
+              id: r.id,
+              project: r.project_name || r.project_slug,
+              projectSlug: r.project_slug,
+              workspaceSlug: r.workspace_slug || 'radoss',
+              branch: r.branch,
+              commitSha: r.commit_sha,
+              status: r.status,
+              durationSeconds: r.duration_seconds,
+              totalTests: r.total_tests,
+              passedCount: r.passed_count,
+              failedCount: r.failed_count,
+              skippedCount: r.skipped_count,
+              runnerNodeVersion: r.runner_node_version,
+              videoUrl: r.video_url,
+              traceUrl: r.trace_url,
+              reportUrl: r.report_url,
+              createdAt: r.created_at,
               personaFeedback: r.persona_feedback_json ? JSON.parse(r.persona_feedback_json) : [],
               uxCopyAudit: r.ux_copy_audit_json ? JSON.parse(r.ux_copy_audit_json) : [],
             })),

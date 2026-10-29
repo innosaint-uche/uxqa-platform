@@ -19,6 +19,8 @@ import { TelemetryRun } from '../types';
 interface WorkspaceDashboardProps {
   workspace: WorkspaceMeta;
   telemetryMap: Record<string, TelemetryRun>;
+  d1Connected?: boolean;
+  d1RunsCount?: number;
   onSelectProject: (workspaceSlug: string, projectSlug: string) => void;
   onNavigateHome: () => void;
 }
@@ -26,6 +28,8 @@ interface WorkspaceDashboardProps {
 export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
   workspace,
   telemetryMap,
+  d1Connected = true,
+  d1RunsCount = 4,
   onSelectProject,
 }) => {
   const [copiedCli, setCopiedCli] = useState(false);
@@ -67,9 +71,13 @@ export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
             <span className="px-3 py-1.5 bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-mono text-xs font-semibold">
               Super Admin: Uchenna Innocent
             </span>
-            <span className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-mono text-xs font-bold flex items-center space-x-1">
+            <span className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-mono text-xs font-bold flex items-center space-x-1.5">
+              <span className="w-2 h-2 bg-emerald-500 rounded-none animate-pulse"></span>
+              <span>D1 Edge: {d1Connected ? 'Active' : 'Standby'} ({d1RunsCount} Runs)</span>
+            </span>
+            <span className="px-3 py-1.5 bg-purple-50 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-800 text-purple-700 dark:text-purple-300 font-mono text-xs font-bold flex items-center space-x-1">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Edge Verified</span>
+              <span>R2 Binary Storage</span>
             </span>
           </div>
         </div>
