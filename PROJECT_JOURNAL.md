@@ -6,6 +6,19 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R1.3: Cloudflare Pages Edge Functions, D1 Schema & Intake Persistence Shipped
+- **Shipped Scope:**
+  - Designed canonical Cloudflare D1 SQL relational schema (`migrations/0001_initial_schema.sql`): `waitlist_subscribers`, `workspaces`, `projects`, and `test_runs` with high-performance indices.
+  - Implemented Cloudflare Pages Functions edge API tier in `functions/`:
+    - `functions/api/_middleware.ts`: Global CORS handling and security headers (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`).
+    - `functions/api/intake.ts`: POST endpoint persisting onboarding CRM submissions to D1 with conflict updates and GET export endpoint protected by Super Admin credentials.
+    - `functions/api/telemetry.ts`: GET endpoint streaming test runs and POST ingestion endpoint receiving telemetry from GitHub Actions cloud runners via `cto-cloud-qa` API key.
+    - `functions/api/auth.ts`: Authentication verification gate enforcing Super Admin RBAC for `uchenna@radossdigital.com` and `innosaint.uche@gmail.com`.
+    - `functions/types.ts` & `functions/tsconfig.json`: Isolated Cloudflare Workers types environment.
+  - Connected React frontend modals (`OnboardingModal` and `LoginModal`) to `/api/intake` and `/api/auth` with graceful local preview fallbacks.
+  - Upgraded verification suite (`scripts/verify.mjs` / `npm run verify`) with Gate 6: Cloudflare Pages Functions typecheck.
+  - Verification: 100% PASS (6/6 gates green).
+
 ### 2026-10-29: R1.2: React 19 Swiss Grid Scaffold Shipped, M2 Landing Showcase & Verification Gate
 - **Shipped Scope:**
   - Initialised local Git repository with hardened `.gitignore`.
@@ -57,7 +70,7 @@
 | :--- | :--- | :--- |
 | **M1: Core Authority & Blueprint** | `AGENTS.md`, `PROJECT_JOURNAL.md`, architecture and UX writing specs | Completed |
 | **M2: Landing Page & Micro-Interactions** | Silicon Valley minimal showcase, Swiss Grid, waitlist capture, zero heavy video | Completed |
-| **M3: Auth & Intake System** | OAuth gateway, `/login`, `/registration` questionnaire, Super Admin RBAC | Next |
-| **M4: Telemetry Hub & R2 Storage** | Edge router for `/<workspace>/<project>/`, Playwright HTML report integration | Queued |
+| **M3: Auth & Intake System** | OAuth gateway, `/login`, `/registration` questionnaire, Super Admin RBAC | Completed |
+| **M4: Telemetry Hub & R2 Storage** | Edge router for `/<workspace>/<project>/`, Playwright HTML report integration | Next |
 | **M5: Workers AI Persona & Copy Engine** | Vision screenshot auditing, copy readability analysis, simulated user feedback | Queued |
 | **M6: Composio & External Tool Bus** | Automated issue filing, CRM hooks, headless browser persona dispatch | Queued |

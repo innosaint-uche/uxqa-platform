@@ -87,6 +87,11 @@ step('TypeScript typecheck and Vite production build', () => {
   execSync('npm run build', { stdio: 'pipe' });
 });
 
+// 6. Cloudflare Pages Functions Typecheck
+step('Cloudflare Pages Functions typecheck', () => {
+  execSync('npx tsc --project functions/tsconfig.json --noEmit', { stdio: 'pipe' });
+});
+
 console.log('\n----------------------------------------');
 if (failed) {
   console.error('❌ VERIFICATION FAILED. Correct issues before proceeding.');
