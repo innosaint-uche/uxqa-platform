@@ -1,0 +1,22 @@
+{
+  "name": "uiqa-platform",
+  "compatibility_date": "2026-10-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "uxqa-db",
+      "database_id": "2b9403c7-57d7-4aeb-804e-30a8f0a97163"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ARTIFACTS",
+      "bucket_name": "uxqa-artifacts"
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  }
+}
