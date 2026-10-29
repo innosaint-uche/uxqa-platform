@@ -19,6 +19,7 @@ import {
   FolderGit2
 } from 'lucide-react';
 import { InteractiveAiAuditor } from './InteractiveAiAuditor';
+import { ComposioDispatchPanel } from './ComposioDispatchPanel';
 
 interface WorkspaceHubProps {
   workspaceSlug?: string;
@@ -212,6 +213,9 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
 
         {/* Interactive Workers AI Auditor */}
         <InteractiveAiAuditor projectName={currentProject.name} />
+
+        {/* Composio External Tool Bus Dispatch */}
+        <ComposioDispatchPanel projectSlug={currentProject.slug} commitSha={telemetry.commitSha} />
 
         {/* Detailed Tabs Container */}
         <div className="bg-[#111215] border border-swiss-border">

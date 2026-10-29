@@ -170,7 +170,7 @@ export const mockNaijaGridTelemetry: TelemetryRun = {
   artifacts: {
     videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/grid/audio_canvas_flow.webm',
     traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/grid/trace.zip',
-    reportUrl: 'https://aura-academy-qa.pages.dev',
+    reportUrl: 'https://uiqa-platform.pages.dev/radoss/naija-grid/',
     screenshotsCount: 12,
   },
   personaFeedback: [
@@ -229,7 +229,7 @@ export const mockDeepSyqueTelemetry: TelemetryRun = {
   artifacts: {
     videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/deepsyque/assessment_flow.webm',
     traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/deepsyque/trace.zip',
-    reportUrl: 'https://aura-academy-qa.pages.dev',
+    reportUrl: 'https://uiqa-platform.pages.dev/radoss/deepsyque/',
     screenshotsCount: 8,
   },
   personaFeedback: [
@@ -278,7 +278,7 @@ export const mockEataliaTelemetry: TelemetryRun = {
   artifacts: {
     videoUrl: 'https://uxqa-artifacts.radoss.agency/runs/eatalia/menu_order_flow.webm',
     traceUrl: 'https://trace.playwright.dev/?trace=https://uxqa-artifacts.radoss.agency/runs/eatalia/trace.zip',
-    reportUrl: 'https://aura-academy-qa.pages.dev',
+    reportUrl: 'https://uiqa-platform.pages.dev/radoss/eatalia/',
     screenshotsCount: 6,
   },
   personaFeedback: [

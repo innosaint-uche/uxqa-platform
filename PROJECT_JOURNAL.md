@@ -6,6 +6,19 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R1.6: Project URL Parity Corrected, Composio External Tool Bus Shipped (Milestone 6)
+- **Corrections & Audit Resolution:**
+  - Resolved report URL copy-paste anomaly in `src/data/mockTelemetry.ts`. `https://aura-academy-qa.pages.dev` is isolated strictly to AIRA Academy where its live Playwright dashboard resides. Corrected canonical edge routes for Naija Grid (`https://uiqa-platform.pages.dev/radoss/naija-grid/`), DeepSyque (`https://uiqa-platform.pages.dev/radoss/deepsyque/`), and Eatalia (`https://uiqa-platform.pages.dev/radoss/eatalia/`).
+- **Shipped Scope:**
+  - Implemented Composio external defect dispatch endpoint (`functions/api/composio.ts`):
+    - Connects automated defect payloads to Linear (`linear_create_issue`), GitHub Issues (`github_create_issue`), and Slack (`slack_post_message`).
+    - Structures comprehensive bug tickets embedding exact WebM video timestamps (`00:14.2`), Playwright trace archive URLs, failing DOM HTML snippets, and Workers AI persona remediation guidance.
+    - Protected by `x-cto-api-key` header and Super Admin edge session tokens.
+  - Engineered interactive dispatch console (`src/components/ComposioDispatchPanel.tsx`):
+    - One-click tool action switcher (Linear, GitHub, Slack), severity selector (Critical, High, Medium, Low), ticket preview, and instant dispatch status badge.
+    - Integrated directly into `src/components/WorkspaceHub.tsx` per Radoss Swiss Grid (`0px` radius).
+  - Verification: 100% PASS (6/6 gates green).
+
 ### 2026-10-29: R1.5: Cloudflare Workers AI Persona & Copy Engine Shipped (Milestone 5)
 - **Shipped Scope:**
   - Implemented Cloudflare Workers AI edge review handler in `functions/api/ai-review.ts`:
@@ -97,4 +110,4 @@
 | **M3: Auth & Intake System** | OAuth gateway, `/login`, `/registration` questionnaire, Super Admin RBAC | Completed |
 | **M4: Telemetry Hub & R2 Storage** | Edge router for `/<workspace>/<project>/`, Playwright HTML report integration | Completed |
 | **M5: Workers AI Persona & Copy Engine** | Vision screenshot auditing, copy readability analysis, simulated user feedback | Completed |
-| **M6: Composio & External Tool Bus** | Automated issue filing, CRM hooks, headless browser persona dispatch | Next |
+| **M6: Composio & External Tool Bus** | Automated issue filing, CRM hooks, headless browser persona dispatch | Completed |
