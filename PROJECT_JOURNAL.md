@@ -6,6 +6,18 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R1.9: Diversified Project Copy Audits & Dynamic Interactive Auditor Shipped
+- **Audit Findings & Fixes:**
+  - Resolved copy audit uniformity where `AIRA by Radoss` copy was hardcoded across the interactive auditor and mock registries.
+  - Authored tailored, domain-specific 3-point copy audits in `src/data/mockTelemetry.ts` for all flagship projects:
+    - **AIRA Academy:** Curriculum track onboarding, session commit badges, PBKDF2 encryption messaging.
+    - **Naija Grid / Gidi Grid:** Procedural audio synthesis vs Plug Pass generation, 1080x1920 raster buffer vs WhatsApp Status HD download, and Ledger / Sight Mode switching.
+    - **DeepSyque:** Psychometric evaluation jargon vs 5-minute career quiz, cloud state recovery messaging, and salary/hiring benchmark upgrade cards.
+    - **Eatalia Limited:** Remote food order protocol vs 15-minute hot meal delivery, multi-rail checkout payment methods, and kitchen dispatch notifications.
+  - Added project switcher pill bar directly in `LiveTelemetryShowcase.tsx` on the landing showcase, allowing visitors to instantly toggle between projects.
+  - Updated `InteractiveAiAuditor.tsx` with dynamic `useEffect` synchronization, pre-populating project-calibrated elements and expected conversion lift metrics.
+- **Verification:** 100% PASS (6/6 gates green). Deployed to Cloudflare Pages edge (`https://uiqa-platform.pages.dev/`).
+
 ### 2026-10-29: R1.8: Visual Evidence Overhaul & Default Light Theme Architecture Shipped
 - **Shipped Scope:**
   - **Light Theme as Default:**
