@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   FolderGit2
 } from 'lucide-react';
+import { InteractiveAiAuditor } from './InteractiveAiAuditor';
 
 interface WorkspaceHubProps {
   workspaceSlug?: string;
@@ -208,6 +209,9 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Interactive Workers AI Auditor */}
+        <InteractiveAiAuditor projectName={currentProject.name} />
 
         {/* Detailed Tabs Container */}
         <div className="bg-[#111215] border border-swiss-border">

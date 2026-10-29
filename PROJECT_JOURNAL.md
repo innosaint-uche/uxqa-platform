@@ -6,6 +6,18 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-29: R1.5: Cloudflare Workers AI Persona & Copy Engine Shipped (Milestone 5)
+- **Shipped Scope:**
+  - Implemented Cloudflare Workers AI edge review handler in `functions/api/ai-review.ts`:
+    - `@cf/meta/llama-3.3-70b-instruct` execution for microcopy readability analysis, conversion friction detection, and high-converting copy generation.
+    - `@cf/qwen/qwen2.5-coder-32b-instruct` execution for simulated customer archetypes (Novice Consumer, Speed Power User, Skeptical Buyer, QA Executive) returning structured score (0-100), critique, and actionable recommendations.
+    - Built-in heuristic engine fallback ensuring fast response in local environments without requiring local model weights.
+  - Engineered `src/components/InteractiveAiAuditor.tsx` component:
+    - Interactive UX Copy Evaluator with on-demand input, selector tagging, and expected conversion lift metrics.
+    - Interactive Persona Simulator with one-click archetype switching and instant feedback card.
+  - Integrated `InteractiveAiAuditor` into `src/components/WorkspaceHub.tsx` per Radoss Swiss Grid (`0px` border radius).
+  - Verification: 100% PASS (6/6 gates green).
+
 ### 2026-10-29: R1.4: Multi-Tenant Workspace Router & Telemetry Hub Shipped (Milestone 4)
 - **Shipped Scope:**
   - Engineered multi-tenant workspace telemetry view (`src/components/WorkspaceHub.tsx`) supporting path routing for `/:workspaceSlug/:projectSlug/`.
@@ -84,5 +96,5 @@
 | **M2: Landing Page & Micro-Interactions** | Silicon Valley minimal showcase, Swiss Grid, waitlist capture, zero heavy video | Completed |
 | **M3: Auth & Intake System** | OAuth gateway, `/login`, `/registration` questionnaire, Super Admin RBAC | Completed |
 | **M4: Telemetry Hub & R2 Storage** | Edge router for `/<workspace>/<project>/`, Playwright HTML report integration | Completed |
-| **M5: Workers AI Persona & Copy Engine** | Vision screenshot auditing, copy readability analysis, simulated user feedback | Next |
-| **M6: Composio & External Tool Bus** | Automated issue filing, CRM hooks, headless browser persona dispatch | Queued |
+| **M5: Workers AI Persona & Copy Engine** | Vision screenshot auditing, copy readability analysis, simulated user feedback | Completed |
+| **M6: Composio & External Tool Bus** | Automated issue filing, CRM hooks, headless browser persona dispatch | Next |
