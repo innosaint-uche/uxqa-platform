@@ -91,12 +91,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const version = body.version || 'v1.0';
 
     if (env.DB) {
-      // Find matching project_id in D1
+      // Find or create matching project_id in D1
+      const targetSlug = body.projectSlug || body.projectId || 'aira-academy';
       const projectRow = await env.DB.prepare(`
         SELECT id FROM projects WHERE slug = ? OR id = ? LIMIT 1
-      `).bind(body.projectSlug || body.projectId || 'aira-academy', body.projectId || 'proj_aira_01').first<{ id: string }>();
+      `).bind(targetSlug, targetSlug).first<{ id: string }>();
 
-      const projectId = projectRow?.id || 'proj_aira_01';
+      let projectId = projectRow?.id;
+      if (!projectId) {
+        projectId = `proj_${targetSlug.replace(/[^a-z0-9_]/gi, '_')}`;
+        await env.DB.prepare(`
+          INSERT INTO projects (id, workspace_id, slug, name, production_url)
+          VALUES (?, 'ws_radoss_01', ?, ?, ?)
+        `).bind(
+          projectId,
+          targetSlug,
+          body.title || targetSlug,
+          body.targetUrl
+        ).run();
+      }
 
       await env.DB.prepare(`
         INSERT INTO test_plans (id, project_id, title, target_url, version, viewport, steps_json, updated_at)

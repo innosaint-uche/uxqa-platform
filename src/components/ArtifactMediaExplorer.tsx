@@ -23,6 +23,8 @@ interface ArtifactMediaExplorerProps {
 }
 
 export const ArtifactMediaExplorer: React.FC<ArtifactMediaExplorerProps> = ({ telemetry }) => {
+  const [playerMode, setPlayerMode] = useState<'video' | 'simulation'>('simulation');
+  const [videoError, setVideoError] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [selectedScreenshot, setSelectedScreenshot] = useState<TestScreenshot | null>(null);
@@ -80,14 +82,39 @@ export const ArtifactMediaExplorer: React.FC<ArtifactMediaExplorerProps> = ({ te
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-emerald-500 rounded-none animate-pulse"></span>
               <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono">
-                Interactive Session Video Player
+                {playerMode === 'video' ? 'Cloudflare R2 Live Video Stream' : 'Step Action Scrobbler (Simulation)'}
               </h3>
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              Recorded in cloud headless Chromium at 60fps. Zero local download required.
+              {playerMode === 'video' 
+                ? 'Direct WebM stream from Cloudflare R2 binary bucket with HTTP 206 range byte seeking.'
+                : 'Interactive step transition replay and DOM scrobbler (Zero local RAM toll).'}
             </p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex border border-gray-300 dark:border-swiss-border font-mono text-[11px]">
+              <button
+                onClick={() => setPlayerMode('simulation')}
+                className={`px-2.5 py-1 transition-colors ${
+                  playerMode === 'simulation'
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-gray-100 dark:bg-[#181a20] text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Step Replay
+              </button>
+              <button
+                onClick={() => setPlayerMode('video')}
+                className={`px-2.5 py-1 transition-colors ${
+                  playerMode === 'video'
+                    ? 'bg-blue-600 text-white font-semibold'
+                    : 'bg-gray-100 dark:bg-[#181a20] text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Raw R2 Stream
+              </button>
+            </div>
+
             <span className="text-[10px] font-mono px-2 py-0.5 bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-800">
               Cloudflare R2 ($0 Egress)
             </span>
@@ -103,106 +130,139 @@ export const ArtifactMediaExplorer: React.FC<ArtifactMediaExplorerProps> = ({ te
           </div>
         </div>
 
-        {/* Video Canvas Simulation Screen */}
-        <div className="relative aspect-video bg-[#0a0a0c] border border-gray-800 flex flex-col justify-between overflow-hidden group">
-          {/* Top Bar inside Video */}
-          <div className="p-3 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between z-10 text-[11px] font-mono text-gray-300">
-            <div className="flex items-center space-x-2">
-              <span className="px-1.5 py-0.5 bg-red-600 text-white font-bold text-[9px] uppercase tracking-wider">
-                REC
-              </span>
-              <span>{telemetry.project}</span>
-              <span className="text-gray-500">|</span>
-              <span className="text-blue-400">Viewport: 1920x1080</span>
-            </div>
-            <div className="flex items-center space-x-3 text-gray-400">
-              <span>Runner: Ubuntu 24.04</span>
-              <span>Node {telemetry.runner.nodeVersion}</span>
-            </div>
-          </div>
-
-          {/* Center Stage Preview */}
-          <div className="flex-1 flex flex-col items-center justify-center p-6 text-center relative">
-            <div className="absolute inset-0 bg-radial from-blue-900/10 via-transparent to-transparent opacity-40"></div>
-            
-            {/* Visual Action Indicator */}
-            <div className="relative z-10 max-w-md p-4 bg-[#14161c]/90 border border-swiss-border backdrop-blur-sm text-left font-mono">
-              <div className="flex items-center justify-between text-[10px] text-gray-400 mb-2">
-                <span className="text-emerald-400 flex items-center space-x-1">
-                  <CheckCircle2 className="w-3 h-3" />
-                  <span>STEP {activeStepIndex + 1} OF {steps.length}</span>
-                </span>
-                <span>{steps[activeStepIndex]?.timestamp || '00:00.0'}</span>
-              </div>
-              <div className="text-xs font-bold text-white mb-1">
-                {steps[activeStepIndex]?.label}
-              </div>
-              <div className="text-[11px] text-blue-400 font-mono break-all">
-                &gt; {steps[activeStepIndex]?.action}
-              </div>
-            </div>
-
-            {/* Big Play / Pause Overlay Button */}
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="mt-5 w-14 h-14 bg-blue-600/90 hover:bg-blue-500 border border-blue-400/60 flex items-center justify-center transition-transform hover:scale-105 shadow-lg z-10"
-              title={isPlaying ? 'Pause Simulation' : 'Play Simulation'}
-            >
-              {isPlaying ? (
-                <Pause className="w-6 h-6 text-white" />
-              ) : (
-                <Play className="w-6 h-6 text-white fill-white ml-0.5" />
-              )}
-            </button>
-          </div>
-
-          {/* Bottom Video Controls Bar */}
-          <div className="p-3 bg-gradient-to-t from-black/95 via-black/80 to-transparent z-10">
-            {/* Progress Bar */}
-            <div className="w-full bg-gray-800 h-1.5 mb-2.5 relative cursor-pointer group/bar">
-              <div 
-                className="bg-blue-600 h-full transition-all duration-300"
-                style={{ width: `${((activeStepIndex + 1) / steps.length) * 100}%` }}
-              ></div>
-              {/* Step Markers along the progress bar */}
-              {steps.map((s, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => handleStepJump(idx)}
-                  className={`absolute top-1/2 -translate-y-1/2 w-2 h-2 border cursor-pointer transition-colors ${
-                    idx <= activeStepIndex ? 'bg-blue-400 border-white' : 'bg-gray-700 border-gray-900'
-                  }`}
-                  style={{ left: `${(idx / (steps.length - 1)) * 98}%` }}
-                  title={`${s.timestamp}: ${s.label}`}
-                ></div>
-              ))}
-            </div>
-
-            {/* Controls Row */}
-            <div className="flex items-center justify-between text-xs font-mono text-gray-300">
-              <div className="flex items-center space-x-3">
-                <button 
-                  onClick={() => setIsPlaying(!isPlaying)} 
-                  className="hover:text-white transition-colors"
+        {/* Video Canvas Stage */}
+        {playerMode === 'video' ? (
+          <div className="relative aspect-video bg-[#0a0a0c] border border-gray-800 flex items-center justify-center overflow-hidden">
+            {!videoError ? (
+              <video
+                controls
+                className="w-full h-full object-contain"
+                src={telemetry.artifacts.videoUrl}
+                onError={() => setVideoError(true)}
+              >
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <div className="p-8 text-center max-w-md font-mono text-xs space-y-3">
+                <Video className="w-8 h-8 text-purple-400 mx-auto" />
+                <div className="text-white font-bold">R2 Video Binary Pending CI/CD Upload</div>
+                <p className="text-gray-400 leading-relaxed text-[11px]">
+                  The cloud Playwright runner has not yet dispatched this specific WebM file to Cloudflare R2 bucket <code className="text-blue-400">uxqa-artifacts</code>. Switch to Step Replay to inspect DOM transitions.
+                </p>
+                <button
+                  onClick={() => {
+                    setVideoError(false);
+                    setPlayerMode('simulation');
+                  }}
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-colors"
                 >
-                  {isPlaying ? 'PAUSE' : 'PLAY'}
+                  Switch to Step Action Replay
                 </button>
-                <span className="text-gray-500">|</span>
-                <span className="text-gray-400">
-                  {steps[activeStepIndex]?.timestamp || '00:00.0'} / {telemetry.artifacts.videoDuration || '00:42.8'}
-                </span>
-                <span className="text-emerald-400 text-[10px] px-1.5 py-0.2 bg-emerald-950 border border-emerald-800">
-                  100% PASS
-                </span>
               </div>
-              <div className="flex items-center space-x-2 text-[11px] text-gray-400">
-                <span>Speed: 1.0x</span>
-                <span className="text-gray-600">•</span>
-                <span>Headless Chromium</span>
+            )}
+          </div>
+        ) : (
+          /* Step Action Simulation Screen */
+          <div className="relative aspect-video bg-[#0a0a0c] border border-gray-800 flex flex-col justify-between overflow-hidden group">
+            {/* Top Bar inside Video */}
+            <div className="p-3 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between z-10 text-[11px] font-mono text-gray-300">
+              <div className="flex items-center space-x-2">
+                <span className="px-1.5 py-0.5 bg-amber-600 text-white font-bold text-[9px] uppercase tracking-wider">
+                  STEP REPLAY
+                </span>
+                <span>{telemetry.project}</span>
+                <span className="text-gray-500">|</span>
+                <span className="text-blue-400">Viewport: 1920x1080</span>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-400">
+                <span>Runner: Ubuntu 24.04</span>
+                <span>Node {telemetry.runner.nodeVersion}</span>
+              </div>
+            </div>
+
+            {/* Center Stage Preview */}
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-center relative">
+              <div className="absolute inset-0 bg-radial from-blue-900/10 via-transparent to-transparent opacity-40"></div>
+              
+              {/* Visual Action Indicator */}
+              <div className="relative z-10 max-w-md p-4 bg-[#14161c]/90 border border-swiss-border backdrop-blur-sm text-left font-mono">
+                <div className="flex items-center justify-between text-[10px] text-gray-400 mb-2">
+                  <span className="text-emerald-400 flex items-center space-x-1">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>STEP {activeStepIndex + 1} OF {steps.length}</span>
+                  </span>
+                  <span>{steps[activeStepIndex]?.timestamp || '00:00.0'}</span>
+                </div>
+                <div className="text-xs font-bold text-white mb-1">
+                  {steps[activeStepIndex]?.label}
+                </div>
+                <div className="text-[11px] text-blue-400 font-mono break-all">
+                  &gt; {steps[activeStepIndex]?.action}
+                </div>
+              </div>
+
+              {/* Big Play / Pause Overlay Button */}
+              <button
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="mt-5 w-14 h-14 bg-blue-600/90 hover:bg-blue-500 border border-blue-400/60 flex items-center justify-center transition-transform hover:scale-105 shadow-lg z-10"
+                title={isPlaying ? 'Pause Simulation' : 'Play Simulation'}
+              >
+                {isPlaying ? (
+                  <Pause className="w-6 h-6 text-white" />
+                ) : (
+                  <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+                )}
+              </button>
+            </div>
+
+            {/* Bottom Video Controls Bar */}
+            <div className="p-3 bg-gradient-to-t from-black/95 via-black/80 to-transparent z-10">
+              {/* Progress Bar */}
+              <div className="w-full bg-gray-800 h-1.5 mb-2.5 relative cursor-pointer group/bar">
+                <div 
+                  className="bg-blue-600 h-full transition-all duration-300"
+                  style={{ width: `${((activeStepIndex + 1) / steps.length) * 100}%` }}
+                ></div>
+                {/* Step Markers along the progress bar */}
+                {steps.map((s, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => handleStepJump(idx)}
+                    className={`absolute top-1/2 -translate-y-1/2 w-2 h-2 border cursor-pointer transition-colors ${
+                      idx <= activeStepIndex ? 'bg-blue-400 border-white' : 'bg-gray-700 border-gray-900'
+                    }`}
+                    style={{ left: `${(idx / (steps.length - 1)) * 98}%` }}
+                    title={`${s.timestamp}: ${s.label}`}
+                  ></div>
+                ))}
+              </div>
+
+              {/* Controls Row */}
+              <div className="flex items-center justify-between text-xs font-mono text-gray-300">
+                <div className="flex items-center space-x-3">
+                  <button 
+                    onClick={() => setIsPlaying(!isPlaying)} 
+                    className="hover:text-white transition-colors"
+                  >
+                    {isPlaying ? 'PAUSE' : 'PLAY'}
+                  </button>
+                  <span className="text-gray-500">|</span>
+                  <span className="text-gray-400">
+                    {steps[activeStepIndex]?.timestamp || '00:00.0'} / {telemetry.artifacts.videoDuration || '00:42.8'}
+                  </span>
+                  <span className="text-emerald-400 text-[10px] px-1.5 py-0.2 bg-emerald-950 border border-emerald-800">
+                    100% PASS
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2 text-[11px] text-gray-400">
+                  <span>Speed: 1.0x</span>
+                  <span className="text-gray-600">•</span>
+                  <span>Headless Chromium</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Timecoded Action Step Pills */}
         <div className="mt-4 pt-4 border-t border-gray-200 dark:border-swiss-border">

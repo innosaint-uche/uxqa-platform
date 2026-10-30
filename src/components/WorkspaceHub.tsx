@@ -19,6 +19,7 @@ import { ComposioDispatchPanel } from './ComposioDispatchPanel';
 import { ArtifactMediaExplorer } from './ArtifactMediaExplorer';
 import { WorkspaceDashboard } from './WorkspaceDashboard';
 import { JourneyPlanBuilder } from './JourneyPlanBuilder';
+import { TelemetryRun } from '../types';
 
 interface WorkspaceHubProps {
   workspaceSlug?: string;
@@ -45,14 +46,56 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
   const [copied, setCopied] = useState(false);
   const [d1Connected, setD1Connected] = useState(true);
   const [d1RunsCount, setD1RunsCount] = useState(4);
+  const [liveRuns, setLiveRuns] = useState<Record<string, TelemetryRun>>({});
 
   useEffect(() => {
     fetch('/api/telemetry')
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.runs) {
+        if (data.success && data.runs && data.runs.length > 0) {
           setD1Connected(true);
           setD1RunsCount(data.runs.length);
+
+          const runsByProject: Record<string, TelemetryRun> = {};
+          for (const r of data.runs) {
+            const slug = r.projectSlug || 'aira-academy';
+            if (!runsByProject[slug]) {
+              const base = mockTelemetryRegistry[slug] || mockAiraTelemetry;
+              runsByProject[slug] = {
+                id: r.id,
+                project: r.project || base.project,
+                repo: base.repo,
+                branch: r.branch || 'main',
+                commitSha: r.commitSha || base.commitSha,
+                status: r.status,
+                durationSeconds: r.durationSeconds || base.durationSeconds,
+                totalTests: r.totalTests || base.totalTests,
+                passedCount: r.passedCount || base.passedCount,
+                failedCount: r.failedCount || 0,
+                skippedCount: r.skippedCount || 0,
+                timestamp: r.createdAt || base.timestamp,
+                runner: {
+                  type: 'github-actions-ubuntu',
+                  nodeVersion: r.runnerNodeVersion || 'v24.2.0',
+                  localRamUsedMb: 0,
+                  localCpuUsedPct: 0,
+                },
+                artifacts: {
+                  videoUrl: r.videoUrl || base.artifacts.videoUrl,
+                  traceUrl: r.traceUrl || base.artifacts.traceUrl,
+                  reportUrl: r.reportUrl || base.artifacts.reportUrl,
+                  screenshotsCount: base.artifacts.screenshotsCount,
+                  videoDuration: base.artifacts.videoDuration,
+                  videoSteps: base.artifacts.videoSteps,
+                  screenshots: base.artifacts.screenshots,
+                  files: base.artifacts.files,
+                },
+                personaFeedback: r.personaFeedback && r.personaFeedback.length > 0 ? r.personaFeedback : base.personaFeedback,
+                uxCopyAudit: r.uxCopyAudit && r.uxCopyAudit.length > 0 ? r.uxCopyAudit : base.uxCopyAudit,
+              };
+            }
+          }
+          setLiveRuns(runsByProject);
         }
       })
       .catch(() => setD1Connected(false));
@@ -62,7 +105,9 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
   const currentWorkspace = mockWorkspaces.find((w) => w.slug === workspaceSlug) || mockWorkspaces[0];
   const currentProject =
     currentWorkspace.projects.find((p) => p.slug === projectSlug) || currentWorkspace.projects[0];
-  const telemetry = mockTelemetryRegistry[currentProject.slug] || mockAiraTelemetry;
+  const fallbackTelemetry = mockTelemetryRegistry[currentProject.slug] || mockAiraTelemetry;
+  const telemetry = liveRuns[currentProject.slug] || fallbackTelemetry;
+  const combinedTelemetryMap = { ...mockTelemetryRegistry, ...liveRuns };
 
   const handleCopyMarkdownReport = () => {
     const report = `# UXQA Test Run Evidence: ${telemetry.project}
@@ -225,7 +270,7 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
         {currentView === 'workspace' ? (
           <WorkspaceDashboard
             workspace={currentWorkspace}
-            telemetryMap={mockTelemetryRegistry}
+            telemetryMap={combinedTelemetryMap}
             d1Connected={d1Connected}
             d1RunsCount={d1RunsCount}
             onSelectProject={handleSelectProjectFromWorkspace}

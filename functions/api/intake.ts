@@ -175,9 +175,38 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
       const runId = `run_onboarding_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
 
+      // 1. Resolve or dynamically create isolated project in D1 (Zero Multi-Tenancy Leaks)
+      const projectSlug = body.productName
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '') || `external-${id.slice(-6)}`;
+
+      let targetProjectId = `proj_${projectSlug.replace(/-/g, '_')}`;
+
       // Record in D1 test_runs if DB binding is available
       if (env.DB) {
         try {
+          const existingProj = await env.DB.prepare(`
+            SELECT id FROM projects WHERE slug = ? LIMIT 1
+          `).bind(projectSlug).first<{ id: string }>();
+
+          if (existingProj) {
+            targetProjectId = existingProj.id;
+          } else {
+            // Provision isolated project record in D1
+            await env.DB.prepare(`
+              INSERT INTO projects (id, workspace_id, slug, name, repo_url, production_url)
+              VALUES (?, 'ws_radoss_01', ?, ?, ?, ?)
+            `).bind(
+              targetProjectId,
+              projectSlug,
+              body.productName.trim(),
+              body.repoUrl?.trim() || null,
+              targetUrl
+            ).run();
+          }
+
           await env.DB.prepare(`
             INSERT INTO test_runs (
               id, project_id, branch, commit_sha, status,
@@ -187,7 +216,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `).bind(
             runId,
-            'proj_aira_01', // Fallback anchor project
+            targetProjectId,
             'onboarding-instant-audit',
             `audit_${runId.slice(-6)}`,
             passed ? 'passed' : 'failed',
@@ -210,6 +239,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
       instantAudit = {
         runId,
+        projectId: targetProjectId,
+        projectSlug,
         targetUrl,
         pageTitle,
         httpStatus,
