@@ -117,9 +117,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       });
     }
 
-    // Default redirect to public CDN placeholder for images / videos if R2 empty
-    if (rawPath.endsWith('.png') || rawPath.endsWith('.jpg')) {
-      return Response.redirect('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80', 302);
+    // Default redirect to native edge SVG DOM capture placeholder if R2 empty
+    if (rawPath.endsWith('.png') || rawPath.endsWith('.jpg') || rawPath.endsWith('.svg')) {
+      return Response.redirect('/assets/dom-captures/aira-curriculum-desktop.svg', 302);
     }
 
     return new Response(

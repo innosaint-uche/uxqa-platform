@@ -6,6 +6,33 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-30: R4.3: Product & UX Direction Alignment & Trust Infrastructure Shipped
+- **Executive Context (Google Doc Tab `t.e8lsc8zbxjj1` Implementation):**
+  - Remediated all 6 interface deficits and trust issues raised in the Google Doc critique (`1SuRRAAi_YJy_ylO9ZGIPV2Iz8IiJ4My1Kd_XGykUnWE`).
+  - Shipped the 3 core MVP customer jobs: (1) Test the product, (2) Improve the experience, and (3) Show the product (Marketing Outputs).
+- **Shipped Scope:**
+  - **Eradication of Stock Photo Evidence Scandal (`src/data/mockTelemetry.ts`, `functions/api/artifacts/[[path]].ts`):**
+    - Completely replaced all 13 external Unsplash URLs with domain-calibrated, high-contrast SVG vector captures (`public/assets/dom-captures/`).
+    - Captured domestic assets for AIRA Academy curriculum, mobile touch navigation, PBKDF2 session commits, tablet scrobblers, DeepSyque psychometrics, and Eatalia multi-rail checkout.
+    - Zero external stock photos remaining in the repository.
+  - **Explicit AI Visual Design & Accessibility Auditor (`src/components/VisualDesignAuditor.tsx`):**
+    - Added dedicated inspection panel auditing Hierarchy & Layout, Tap Ergonomics (48px standard), Contrast & Type (WCAG AA), and Brand Voice & Trust.
+    - Strictly separates measured geometry from unverified AI conversion hypotheses.
+    - Features user-editable solution variants with 1-click "Save as Design Variant" persistence.
+  - **Marketing Visuals & Device Frame Export Presets (`src/components/ArtifactMediaExplorer.tsx`):**
+    - Added device-frame export selector supporting Clean Crop, iPhone 16 Frame (with Dynamic Island notch), and Desktop Browser Frame.
+    - Transforms captured test evidence into immediate marketing collateral for launch posts, demo reels, and sales decks.
+  - **Navigation Consolidation (`src/components/WorkspaceHub.tsx`):**
+    - Restructured technical 5-tab layout into 4 clean jobs-to-be-done views: `Overview · Tests & Journeys · UX & Design Review · Assets & Marketing Exports`.
+  - **Streamlined 3-Step Intake & Accessibility (`src/components/OnboardingModal.tsx`, `LoginModal.tsx`):**
+    - Collapsed cumbersome 6-step form into high-velocity 3-step intake: `URL & Identity → Goal & Context → Review Scope & Rigor`.
+    - Added "Product Marketer / Growth" to target builder roles.
+    - Added `aria-label="Close setup"` and `aria-label="Close login"` for WCAG modal accessibility compliance.
+  - **Journey Builder Plain-Language Overhaul (`src/components/JourneyPlanBuilder.tsx`):**
+    - Changed "Save to D1" to "Save plan".
+    - Added human-readable action labels and visual element helper presets (`h1`, `button`, `input`).
+- **Verification:** 100% PASS (6/6 gates green). Commits deployed live to Cloudflare Pages edge.
+
 ### 2026-10-30: R4.2: Hallucination Reduction & Forensic Integrity Remediation Shipped
 - **Executive Context (Wolf Critique & Anti-Gaslighting Protocol):**
   - Executed thorough forensic self-critique under `/Hallucination Reduction & Verification Profile`.

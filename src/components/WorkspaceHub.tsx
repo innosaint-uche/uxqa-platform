@@ -19,6 +19,7 @@ import { ComposioDispatchPanel } from './ComposioDispatchPanel';
 import { ArtifactMediaExplorer } from './ArtifactMediaExplorer';
 import { WorkspaceDashboard } from './WorkspaceDashboard';
 import { JourneyPlanBuilder } from './JourneyPlanBuilder';
+import { VisualDesignAuditor } from './VisualDesignAuditor';
 import { TelemetryRun } from '../types';
 
 interface WorkspaceHubProps {
@@ -42,7 +43,7 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
     return projectSlug ? 'project' : 'workspace';
   });
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'builder' | 'personas' | 'copy' | 'artifacts'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'tests' | 'ux-design' | 'assets'>('overview');
   const [copied, setCopied] = useState(false);
   const [d1Connected, setD1Connected] = useState(true);
   const [d1RunsCount, setD1RunsCount] = useState(4);
@@ -276,7 +277,7 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
             onSelectProject={handleSelectProjectFromWorkspace}
             onOpenBuilder={(projSlug) => {
               if (projSlug) onSelectProject(currentWorkspace.slug, projSlug);
-              setActiveTab('builder');
+              setActiveTab('tests');
               setCurrentView('project');
             }}
             onNavigateHome={onNavigateHome}
@@ -352,7 +353,7 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
               <ComposioDispatchPanel projectSlug={currentProject.slug} commitSha={telemetry.commitSha} />
             </div>
 
-            {/* Tabs Navigation */}
+            {/* Tabs Navigation (Overview · Tests · UX & Design · Assets) */}
             <div className="border-b border-gray-200 dark:border-swiss-border mb-6">
               <div className="flex space-x-6 font-mono text-xs overflow-x-auto">
                 <button
@@ -363,47 +364,37 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  1. Execution Telemetry
+                  Overview
                 </button>
                 <button
-                  onClick={() => setActiveTab('builder')}
+                  onClick={() => setActiveTab('tests')}
                   className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
-                    activeTab === 'builder'
+                    activeTab === 'tests'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  2. Visual Journey Builder
+                  Tests &amp; Journeys
                 </button>
                 <button
-                  onClick={() => setActiveTab('personas')}
+                  onClick={() => setActiveTab('ux-design')}
                   className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
-                    activeTab === 'personas'
+                    activeTab === 'ux-design'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  3. Simulated Personas ({telemetry.personaFeedback.length})
+                  UX &amp; Design Review
                 </button>
                 <button
-                  onClick={() => setActiveTab('copy')}
+                  onClick={() => setActiveTab('assets')}
                   className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
-                    activeTab === 'copy'
+                    activeTab === 'assets'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  4. UX Copy &amp; Conversion ({telemetry.uxCopyAudit.length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('artifacts')}
-                  className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
-                    activeTab === 'artifacts'
-                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                  }`}
-                >
-                  5. Media &amp; Artifacts Explorer ({telemetry.artifacts.screenshotsCount} Captures)
+                  Assets &amp; Marketing Exports
                 </button>
               </div>
             </div>
@@ -471,114 +462,121 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
               </div>
             )}
 
-            {/* Tab 2: Visual Journey Builder (No-Code) */}
-            {activeTab === 'builder' && (
-              <JourneyPlanBuilder
-                initialProjectSlug={currentProject.slug}
-                initialTargetUrl={currentProject.productionUrl}
-              />
-            )}
-
-            {/* Tab 3: Simulated Personas */}
-            {activeTab === 'personas' && (
-              <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 space-y-6">
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono mb-2">
-                    Autonomous Customer Archetypes (Workers AI)
-                  </h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
-                    Simulated using Cloudflare Workers AI free models (<code className="text-blue-600 dark:text-blue-400 font-mono">@cf/qwen/qwen2.5-coder-32b-instruct</code> &amp; <code className="text-blue-600 dark:text-blue-400 font-mono">@cf/meta/llama-3.2-11b-vision-instruct</code>).
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {telemetry.personaFeedback.map((fb, idx) => (
-                    <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="font-mono text-xs font-bold text-gray-900 dark:text-white">{fb.persona}</span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 font-bold">
-                            Score: {fb.score}/100
-                          </span>
-                        </div>
-                        <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                          "{fb.critique}"
-                        </p>
-                      </div>
-
-                      {fb.recommendations && fb.recommendations.length > 0 && (
-                        <div className="pt-3 border-t border-gray-200 dark:border-swiss-border font-mono text-xs">
-                          <div className="text-[10px] uppercase text-gray-500 dark:text-swiss-muted mb-1 font-bold">Remediation:</div>
-                          {fb.recommendations.map((rec, i) => (
-                            <div key={i} className="text-blue-700 dark:text-blue-300">• {rec}</div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+            {/* Tab 2: Tests & Journeys */}
+            {activeTab === 'tests' && (
+              <div className="space-y-6">
+                <JourneyPlanBuilder
+                  initialProjectSlug={currentProject.slug}
+                  initialTargetUrl={currentProject.productionUrl}
+                />
               </div>
             )}
 
-            {/* Tab 3: UX Copy & Conversion */}
-            {activeTab === 'copy' && (
+            {/* Tab 3: UX & Design Review */}
+            {activeTab === 'ux-design' && (
               <div className="space-y-8">
-                {/* Interactive Dynamic UI Auditor */}
-                <InteractiveAiAuditor projectName={currentProject.name} />
+                {/* Explicit Visual Design & Accessibility Auditor */}
+                <VisualDesignAuditor 
+                  projectName={currentProject.name} 
+                  projectSlug={currentProject.slug} 
+                />
 
-                {/* Pre-calibrated Project Audit Items */}
+                {/* Simulated Personas */}
                 <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 space-y-6">
                   <div>
                     <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono mb-2">
-                      Friction Points &amp; Copy Audit (Llama 3.3 70B)
+                      Autonomous Customer Archetypes (Workers AI)
                     </h3>
                     <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
-                      Readability and conversion friction scoring evaluated across high-value funnel CTAs.
+                      Simulated customer journeys evaluating comprehension and conversion blockers via <code className="text-blue-600 dark:text-blue-400 font-mono">@cf/qwen/qwen2.5-coder-32b-instruct</code>.
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {telemetry.uxCopyAudit.map((item, idx) => (
-                      <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 space-y-4">
+                    {telemetry.personaFeedback.map((fb, idx) => (
+                      <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 flex flex-col justify-between">
                         <div>
-                          <div className="text-[10px] font-mono text-gray-500 dark:text-swiss-muted uppercase tracking-wider mb-1">Target Element</div>
-                          <code className="text-xs font-mono text-blue-700 dark:text-blue-400 break-all">{item.selector}</code>
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="font-mono text-xs font-bold text-gray-900 dark:text-white">{fb.persona}</span>
+                            <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 font-bold">
+                              Score: {fb.score}/100
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                            "{fb.critique}"
+                          </p>
                         </div>
 
-                        <div>
-                          <div className="text-[10px] font-mono text-gray-500 dark:text-swiss-muted uppercase tracking-wider mb-1">Current Copy</div>
-                          <div className="text-xs text-gray-800 dark:text-gray-200 bg-white dark:bg-[#111215] p-2.5 border border-gray-200 dark:border-swiss-border">
-                            "{item.originalText}"
+                        {fb.recommendations && fb.recommendations.length > 0 && (
+                          <div className="pt-3 border-t border-gray-200 dark:border-swiss-border font-mono text-xs">
+                            <div className="text-[10px] uppercase text-gray-500 dark:text-swiss-muted mb-1 font-bold">Remediation:</div>
+                            {fb.recommendations.map((rec, i) => (
+                              <div key={i} className="text-blue-700 dark:text-blue-300">• {rec}</div>
+                            ))}
                           </div>
-                        </div>
-
-                        <div className="pt-2 border-t border-gray-200 dark:border-swiss-border">
-                          <div className="flex items-center justify-between text-[11px] font-mono mb-1">
-                            <span className="text-gray-500">Readability:</span>
-                            <span className="font-semibold text-gray-900 dark:text-white">{item.readabilityGrade}</span>
-                          </div>
-                          <div className="flex items-center justify-between text-[11px] font-mono">
-                            <span className="text-gray-500">Conversion Impact:</span>
-                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">{item.expectedConversionLift}</span>
-                          </div>
-                        </div>
-
-                        <div className="p-3 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900">
-                          <div className="text-[10px] font-mono uppercase text-blue-800 dark:text-blue-300 font-bold flex items-center space-x-1">
-                            <CheckCircle2 className="w-3 h-3" />
-                            <span>Recommended Replacement</span>
-                          </div>
-                          <div className="text-xs font-semibold text-gray-900 dark:text-white mt-0.5">{item.recommendedImprovement}</div>
-                        </div>
+                        )}
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                {/* UX Copy & Conversion Optimizer */}
+                <div className="space-y-6">
+                  <InteractiveAiAuditor projectName={currentProject.name} />
+
+                  <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 space-y-6">
+                    <div>
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono mb-2">
+                        Conversion Friction &amp; Copy Audit (Llama 3.3 70B)
+                      </h3>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
+                        Readability and conversion friction scoring evaluated across high-value funnel CTAs.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {telemetry.uxCopyAudit.map((item, idx) => (
+                        <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border p-5 space-y-4">
+                          <div>
+                            <div className="text-[10px] font-mono text-gray-500 dark:text-swiss-muted uppercase tracking-wider mb-1">Target Element</div>
+                            <code className="text-xs font-mono text-blue-700 dark:text-blue-400 break-all">{item.selector}</code>
+                          </div>
+
+                          <div>
+                            <div className="text-[10px] font-mono text-gray-500 dark:text-swiss-muted uppercase tracking-wider mb-1">Current Copy</div>
+                            <div className="text-xs text-gray-800 dark:text-gray-200 bg-white dark:bg-[#111215] p-2.5 border border-gray-200 dark:border-swiss-border">
+                              "{item.originalText}"
+                            </div>
+                          </div>
+
+                          <div className="pt-2 border-t border-gray-200 dark:border-swiss-border">
+                            <div className="flex items-center justify-between text-[11px] font-mono mb-1">
+                              <span className="text-gray-500">Readability:</span>
+                              <span className="font-semibold text-gray-900 dark:text-white">{item.readabilityGrade}</span>
+                            </div>
+                            <div className="flex items-center justify-between text-[11px] font-mono">
+                              <span className="text-gray-500">Hypothesised Impact:</span>
+                              <span className="text-emerald-600 dark:text-emerald-400 font-bold">{item.expectedConversionLift}</span>
+                            </div>
+                          </div>
+
+                          <div className="p-3 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900">
+                            <div className="text-[10px] font-mono uppercase text-blue-800 dark:text-blue-300 font-bold flex items-center space-x-1">
+                              <CheckCircle2 className="w-3 h-3" />
+                              <span>Recommended Replacement</span>
+                            </div>
+                            <div className="text-xs font-semibold text-gray-900 dark:text-white mt-0.5">{item.recommendedImprovement}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Tab 4: Comprehensive Media & Artifacts Explorer */}
-            {activeTab === 'artifacts' && (
+            {/* Tab 4: Assets & Marketing Exports */}
+            {activeTab === 'assets' && (
               <ArtifactMediaExplorer telemetry={telemetry} />
             )}
 

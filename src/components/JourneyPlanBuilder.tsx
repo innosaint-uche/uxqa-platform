@@ -293,7 +293,7 @@ export const JourneyPlanBuilder: React.FC<JourneyPlanBuilderProps> = ({
               className="px-3.5 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-[#181a20] dark:hover:bg-[#20232b] text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-swiss-border font-mono text-xs font-semibold flex items-center space-x-1.5 transition-colors disabled:opacity-50"
             >
               {isSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />}
-              <span>{isSaving ? 'Saving...' : 'Save to D1'}</span>
+              <span>{isSaving ? 'Saving...' : 'Save plan'}</span>
             </button>
             <button
               onClick={handleRunJourneyLive}
@@ -382,9 +382,9 @@ export const JourneyPlanBuilder: React.FC<JourneyPlanBuilderProps> = ({
               onChange={(e) => setViewport(e.target.value as any)}
               className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:border-blue-600"
             >
-              <option value="responsive">Responsive (Universal Device Auto-Adapt)</option>
               <option value="desktop">Desktop Workstation (1920x1080)</option>
               <option value="mobile">Mobile Handheld (iPhone 16: 390x844)</option>
+              <option value="responsive">Responsive (Fluid Width)</option>
             </select>
           </div>
         </div>
@@ -438,13 +438,13 @@ export const JourneyPlanBuilder: React.FC<JourneyPlanBuilderProps> = ({
                     onChange={(e) => handleUpdateStep(index, 'type', e.target.value)}
                     className="bg-white dark:bg-[#111215] border border-gray-300 dark:border-swiss-border text-xs font-mono font-bold text-gray-900 dark:text-white px-2 py-1 focus:outline-none"
                   >
-                    <option value="navigate">navigate (Edge Fetch)</option>
-                    <option value="assert_visible">assert_visible (Element)</option>
-                    <option value="assert_text">assert_text (Copy Content)</option>
-                    <option value="check_a11y">check_a11y (Viewport &amp; Alt)</option>
-                    <option value="screenshot">screenshot (Visual Capture)</option>
-                    <option value="click">click (CTA Interaction)</option>
-                    <option value="fill">fill (Form Input)</option>
+                    <option value="navigate">Check Page Loads (HTTP 200)</option>
+                    <option value="assert_visible">Check Element Appears</option>
+                    <option value="assert_text">Verify Text / Copy</option>
+                    <option value="click">Click a Button or Link</option>
+                    <option value="fill">Enter Form Text</option>
+                    <option value="check_a11y">Audit Mobile Viewport &amp; Images</option>
+                    <option value="screenshot">Capture Screen State</option>
                   </select>
                 </div>
               </div>
@@ -452,7 +452,7 @@ export const JourneyPlanBuilder: React.FC<JourneyPlanBuilderProps> = ({
               {/* Step Parameters */}
               <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[10px] font-mono text-gray-500 uppercase">Description</label>
+                  <label className="block text-[10px] font-mono text-gray-500 uppercase">Action Description</label>
                   <input
                     type="text"
                     value={step.description}
@@ -463,12 +463,21 @@ export const JourneyPlanBuilder: React.FC<JourneyPlanBuilderProps> = ({
 
                 {step.type !== 'navigate' && step.type !== 'screenshot' && (
                   <div>
-                    <label className="block text-[10px] font-mono text-gray-500 uppercase">Target Selector</label>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <label className="block text-[10px] font-mono text-gray-500 uppercase">Target Element</label>
+                      <div className="flex space-x-1 text-[9px] font-mono text-blue-600 dark:text-blue-400">
+                        <button type="button" onClick={() => handleUpdateStep(index, 'targetSelector', 'h1')} className="hover:underline">h1</button>
+                        <span>•</span>
+                        <button type="button" onClick={() => handleUpdateStep(index, 'targetSelector', 'button')} className="hover:underline">button</button>
+                        <span>•</span>
+                        <button type="button" onClick={() => handleUpdateStep(index, 'targetSelector', 'input')} className="hover:underline">input</button>
+                      </div>
+                    </div>
                     <input
                       type="text"
                       value={step.targetSelector || ''}
                       onChange={(e) => handleUpdateStep(index, 'targetSelector', e.target.value)}
-                      placeholder="e.g. h1, button, .cta-button"
+                      placeholder="e.g. button, h1, a, or .cta-button"
                       className="w-full bg-white dark:bg-[#111215] border border-gray-300 dark:border-swiss-border text-xs font-mono px-2 py-1 text-gray-900 dark:text-white"
                     />
                   </div>

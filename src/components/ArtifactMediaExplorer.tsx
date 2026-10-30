@@ -14,7 +14,10 @@ import {
   Copy, 
   Check,
   Terminal,
-  Clock
+  Clock,
+  Smartphone,
+  Monitor,
+  Crop
 } from 'lucide-react';
 import { TelemetryRun, TestScreenshot, TestArtifactFile } from '../types';
 
@@ -30,6 +33,7 @@ export const ArtifactMediaExplorer: React.FC<ArtifactMediaExplorerProps> = ({ te
   const [selectedScreenshot, setSelectedScreenshot] = useState<TestScreenshot | null>(null);
   const [isZoomed, setIsZoomed] = useState(false);
   const [copiedCli, setCopiedCli] = useState(false);
+  const [deviceFrameMode, setDeviceFrameMode] = useState<'clean' | 'iphone' | 'desktop'>('clean');
 
   const steps = telemetry.artifacts.videoSteps || [
     { timestamp: '00:03.2', seconds: 3.2, label: 'Session Initialization', action: 'page.goto() & auth check', status: 'passed' as const },
@@ -300,16 +304,51 @@ export const ArtifactMediaExplorer: React.FC<ArtifactMediaExplorerProps> = ({ te
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-blue-600 rounded-none"></span>
               <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono">
-                Visual Evidence &amp; Screenshot Library ({screenshots.length} Captures)
+                Visual Evidence &amp; Marketing Exports ({screenshots.length} Captures)
               </h3>
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              Automated high-resolution DOM snapshots inspected by Llama 3.2 Vision. Click to inspect or zoom.
+              Automated high-resolution DOM snapshots inspected by Llama 3.2 Vision. Export as clean PNG or framed for product marketing collateral.
             </p>
           </div>
-          <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 font-bold self-start sm:self-auto">
-            Zero Visual Regressions
-          </span>
+          
+          {/* Device Frame Presets for Marketing & Socials */}
+          <div className="flex items-center space-x-2 font-mono text-xs">
+            <span className="text-[10px] text-gray-500 uppercase mr-1 hidden sm:inline">Frame Mockup:</span>
+            <button
+              onClick={() => setDeviceFrameMode('clean')}
+              className={`px-2.5 py-1 border flex items-center space-x-1 transition-colors ${
+                deviceFrameMode === 'clean'
+                  ? 'bg-blue-600 text-white border-blue-600 font-semibold'
+                  : 'bg-gray-100 dark:bg-[#181a20] text-gray-700 dark:text-gray-300 border-gray-300 dark:border-swiss-border'
+              }`}
+            >
+              <Crop className="w-3 h-3" />
+              <span>Clean Crop</span>
+            </button>
+            <button
+              onClick={() => setDeviceFrameMode('iphone')}
+              className={`px-2.5 py-1 border flex items-center space-x-1 transition-colors ${
+                deviceFrameMode === 'iphone'
+                  ? 'bg-blue-600 text-white border-blue-600 font-semibold'
+                  : 'bg-gray-100 dark:bg-[#181a20] text-gray-700 dark:text-gray-300 border-gray-300 dark:border-swiss-border'
+              }`}
+            >
+              <Smartphone className="w-3 h-3" />
+              <span>iPhone 16</span>
+            </button>
+            <button
+              onClick={() => setDeviceFrameMode('desktop')}
+              className={`px-2.5 py-1 border flex items-center space-x-1 transition-colors ${
+                deviceFrameMode === 'desktop'
+                  ? 'bg-blue-600 text-white border-blue-600 font-semibold'
+                  : 'bg-gray-100 dark:bg-[#181a20] text-gray-700 dark:text-gray-300 border-gray-300 dark:border-swiss-border'
+              }`}
+            >
+              <Monitor className="w-3 h-3" />
+              <span>Desktop Browser</span>
+            </button>
+          </div>
         </div>
 
         {/* Screenshot Grid */}
@@ -523,15 +562,50 @@ export const ArtifactMediaExplorer: React.FC<ArtifactMediaExplorerProps> = ({ te
             </div>
 
             {/* Modal Image Body */}
-            <div className="flex-1 overflow-auto p-4 flex items-center justify-center bg-gray-900/40">
-              <img
-                src={selectedScreenshot.url}
-                alt={selectedScreenshot.title}
-                className={`transition-all duration-200 object-contain max-h-[70vh] border border-gray-300 dark:border-swiss-border ${
-                  isZoomed ? 'scale-150 cursor-zoom-out' : 'scale-100 cursor-zoom-in'
-                }`}
-                onClick={() => setIsZoomed(!isZoomed)}
-              />
+            <div className="flex-1 overflow-auto p-6 flex items-center justify-center bg-gray-900/50">
+              {deviceFrameMode === 'iphone' ? (
+                /* iPhone 16 Frame Preset for Marketing */
+                <div className="w-[360px] h-[720px] bg-black border-4 border-[#333] shadow-2xl relative flex flex-col items-center overflow-hidden shrink-0">
+                  {/* Dynamic Island Notch */}
+                  <div className="w-28 h-6 bg-black rounded-b-xl z-20 absolute top-0 flex items-center justify-center">
+                    <div className="w-3 h-3 bg-[#111] rounded-full mr-3"></div>
+                    <div className="w-2 h-2 bg-[#052e16] rounded-full"></div>
+                  </div>
+                  <img
+                    src={selectedScreenshot.url}
+                    alt={selectedScreenshot.title}
+                    className="w-full h-full object-cover pt-7"
+                  />
+                  <div className="absolute bottom-1 w-32 h-1 bg-white/40 rounded-full"></div>
+                </div>
+              ) : deviceFrameMode === 'desktop' ? (
+                /* Desktop Browser Frame Preset for Marketing */
+                <div className="w-full max-w-4xl bg-[#111215] border border-gray-700 shadow-2xl overflow-hidden shrink-0">
+                  <div className="h-8 bg-[#181a20] border-b border-gray-700 px-3 flex items-center space-x-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                    <div className="ml-4 px-3 py-0.5 bg-[#0a0a0c] border border-gray-800 text-[10px] font-mono text-gray-400 flex-1 truncate">
+                      https://app.uxqa.radoss.agency/preview/{selectedScreenshot.id}
+                    </div>
+                  </div>
+                  <img
+                    src={selectedScreenshot.url}
+                    alt={selectedScreenshot.title}
+                    className="w-full object-contain max-h-[60vh]"
+                  />
+                </div>
+              ) : (
+                /* Clean Raw Crop */
+                <img
+                  src={selectedScreenshot.url}
+                  alt={selectedScreenshot.title}
+                  className={`transition-all duration-200 object-contain max-h-[70vh] border border-gray-300 dark:border-swiss-border ${
+                    isZoomed ? 'scale-150 cursor-zoom-out' : 'scale-100 cursor-zoom-in'
+                  }`}
+                  onClick={() => setIsZoomed(!isZoomed)}
+                />
+              )}
             </div>
 
             {/* DOM Inspector Footer */}

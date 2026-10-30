@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <rect width="1920" height="1080" fill="#0C0E12"/>
+  <rect x="0" y="0" width="1920" height="60" fill="#141720" stroke="#252A38" stroke-width="1"/>
+  <text x="40" y="38" fill="#10B981" font-family="monospace" font-size="16">https://eatalia.ng/menu/combos</text>
+  <g transform="translate(100, 120)">
+    <rect width="1720" height="860" fill="#101218" stroke="#059669" stroke-width="1"/>
+    <text x="60" y="80" fill="#FFFFFF" font-family="sans-serif" font-weight="700" font-size="32">Eatalia Yaba QSR : Cloudflare Edge Proxy &amp; Multi-Rail Checkout</text>
+    <text x="60" y="120" fill="#34D399" font-family="monospace" font-size="16">TTFB: 42ms // NIGERIA STARLINK-SAFE ROUTING // TITAN MX ACTIVE</text>
+    <g transform="translate(60, 170)">
+      <rect width="500" height="600" fill="#151821" stroke="#262D3D" stroke-width="1"/>
+      <rect x="30" y="30" width="440" height="260" fill="#0D0F15"/>
+      <text x="50" y="150" fill="#F59E0B" font-family="sans-serif" font-weight="700" font-size="24">Afro-Italian Pasta Combo</text>
+      <text x="30" y="340" fill="#FFFFFF" font-family="sans-serif" font-weight="600" font-size="20">Jollof Penne Arrabbiata</text>
+      <text x="30" y="375" fill="#9CA3AF" font-family="sans-serif" font-size="14">Signature spiced tomato reduction with grilled chicken cuts.</text>
+      <rect x="30" y="520" width="440" height="48" fill="#059669"/>
+      <text x="180" y="550" fill="#FFFFFF" font-family="sans-serif" font-weight="600" font-size="15">Add to Order (₦7,500)</text>
+    </g>
+    <g transform="translate(600, 170)">
+      <rect width="500" height="600" fill="#151821" stroke="#262D3D" stroke-width="1"/>
+      <rect x="30" y="30" width="440" height="260" fill="#0D0F15"/>
+      <text x="50" y="150" fill="#EF4444" font-family="sans-serif" font-weight="700" font-size="24">Wood-Fired Pizza Special</text>
+      <text x="30" y="340" fill="#FFFFFF" font-family="sans-serif" font-weight="600" font-size="20">Suya Margherita Flatbread</text>
+      <text x="30" y="375" fill="#9CA3AF" font-family="sans-serif" font-size="14">Slow-fermented artisan crust, artisanal mozzarella &amp; suya spice.</text>
+      <rect x="30" y="520" width="440" height="48" fill="#1F2937" stroke="#374151" stroke-width="1"/>
+      <text x="180" y="550" fill="#FFFFFF" font-family="sans-serif" font-weight="600" font-size="15">Add to Order (₦9,200)</text>
+    </g>
+    <g transform="translate(1140, 170)">
+      <rect width="520" height="600" fill="#151821" stroke="#262D3D" stroke-width="1"/>
+      <text x="40" y="60" fill="#FFFFFF" font-family="sans-serif" font-weight="700" font-size="20">Payment Rails Audited</text>
+      <rect x="40" y="90" width="440" height="70" fill="#0D0F15" stroke="#10B981" stroke-width="1"/>
+      <text x="60" y="132" fill="#34D399" font-family="monospace" font-size="16">Paystack Card / Transfer [OK]</text>
+      <rect x="40" y="180" width="440" height="70" fill="#0D0F15" stroke="#10B981" stroke-width="1"/>
+      <text x="60" y="222" fill="#34D399" font-family="monospace" font-size="16">Moniepoint Direct Debit [OK]</text>
+      <rect x="40" y="270" width="440" height="70" fill="#0D0F15" stroke="#10B981" stroke-width="1"/>
+      <text x="60" y="312" fill="#34D399" font-family="monospace" font-size="16">WhatsApp Quick Checkout [OK]</text>
+    </g>
+  </g>
+</svg>

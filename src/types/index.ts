@@ -105,7 +105,7 @@ export interface IntakeSubmission {
   fullName: string;
   workEmail: string;
   organization: string;
-  role: 'Vibe Coder' | 'Solo Founder' | 'Engineering Lead' | 'Product Lead' | 'Agency Owner';
+  role: 'Vibe Coder' | 'Solo Founder' | 'Product Marketer / Growth' | 'Engineering Lead' | 'Product Lead' | 'Agency Owner';
   productName: string;
   productionUrl: string;
   repoUrl: string;

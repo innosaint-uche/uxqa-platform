@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <rect width="1920" height="1080" fill="#0D0E12"/>
+  <rect x="0" y="0" width="1920" height="60" fill="#13151B" stroke="#23262F" stroke-width="1"/>
+  <circle cx="30" cy="30" r="6" fill="#EF4444"/>
+  <circle cx="50" cy="30" r="6" fill="#F59E0B"/>
+  <circle cx="70" cy="30" r="6" fill="#10B981"/>
+  <text x="140" y="35" fill="#889096" font-family="monospace" font-size="14">https://aura-academy.radoss.agency/verify/pbkdf2</text>
+  <g transform="translate(460, 200)">
+    <rect width="1000" height="680" fill="#111215" stroke="#10B981" stroke-width="2"/>
+    <rect x="40" y="40" width="920" height="80" fill="#064E3B"/>
+    <text x="70" y="90" fill="#34D399" font-family="monospace" font-weight="700" font-size="22">PBKDF2 HASH VERIFICATION : 100,000 ITERATIONS PASS</text>
+    <text x="40" y="180" fill="#FFFFFF" font-family="sans-serif" font-weight="600" font-size="28">Cryptographic Session Seal</text>
+    <text x="40" y="215" fill="#9CA3AF" font-family="sans-serif" font-size="15">Autonomous proof of work and SHA-256 certificate anchoring.</text>
+    <rect x="40" y="260" width="920" height="260" fill="#0A0B0E" stroke="#1F2937" stroke-width="1"/>
+    <text x="70" y="310" fill="#6B7280" font-family="monospace" font-size="14">// SHA-256 Digest Signature</text>
+    <text x="70" y="350" fill="#10B981" font-family="monospace" font-size="16">e9c6e902b9403c757d74aeb804e30a8f0a97163a8904f8bbd23418</text>
+    <text x="70" y="410" fill="#6B7280" font-family="monospace" font-size="14">// Hardware Load Profile</text>
+    <text x="70" y="450" fill="#60A5FA" font-family="monospace" font-size="16">RAM Toll: 0.0 MB | Execution Host: Cloudflare Workers Edge | Time: 28ms</text>
+  </g>
+</svg>

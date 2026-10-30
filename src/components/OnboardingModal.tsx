@@ -41,7 +41,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   if (!isOpen) return null;
 
   const handleNext = async () => {
-    if (step < 6) {
+    if (step < 3) {
       setStep(step + 1);
     } else {
       setIsSubmitting(true);
@@ -111,6 +111,7 @@ ${instantAudit.personaFeedback?.[0]?.recommendations?.map((r: string, i: number)
         {/* Close Button */}
         <button
           onClick={onClose}
+          aria-label="Close setup"
           className="absolute top-5 right-5 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
@@ -121,7 +122,7 @@ ${instantAudit.personaFeedback?.[0]?.recommendations?.map((r: string, i: number)
             {/* Progress header */}
             <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-200 dark:border-swiss-border font-mono text-xs">
               <span className="text-blue-600 dark:text-blue-400 font-semibold uppercase">
-                STEP {step} OF 6: INTAKE &amp; CALIBRATION
+                STEP {step} OF 3: {step === 1 ? 'TARGET URL & IDENTITY' : step === 2 ? 'GOAL & CONTEXT' : 'REVIEW SCOPE & RIGOR'}
               </span>
               <span className="text-gray-500 dark:text-swiss-muted">Zero-Hardware Cloud Engine</span>
             </div>
@@ -132,75 +133,15 @@ ${instantAudit.personaFeedback?.[0]?.recommendations?.map((r: string, i: number)
               </div>
             )}
 
-            {/* Step 1: Identity & Role */}
+            {/* Step 1: URL & Identity */}
             {step === 1 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">Who is building?</h3>
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">What is your live URL?</h3>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Introduce yourself and your organization so our personas tailor their feedback style.
+                  Provide your production or staging domain to begin the zero-hardware edge audit.
                 </p>
 
                 <div className="space-y-3 pt-2">
-                  <div>
-                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Alex Morgan"
-                      value={formData.fullName || ''}
-                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Work Email</label>
-                    <input
-                      type="email"
-                      placeholder="alex@company.com"
-                      value={formData.workEmail || ''}
-                      onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
-                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Primary Role</label>
-                    <select
-                      value={formData.role}
-                      onChange={(e) => setFormData({ ...formData, role: e.target.value as any })}
-                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
-                    >
-                      <option value="Vibe Coder">Vibe Coder (AI-Assisted Builder)</option>
-                      <option value="Solo Founder">Solo Founder / Technical Founder</option>
-                      <option value="Engineering Lead">Engineering Lead / CTO</option>
-                      <option value="Product Lead">Product Manager / Head of Product</option>
-                      <option value="Agency Owner">Agency Owner / Freelance Consultant</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Step 2: Product & Repository */}
-            {step === 2 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">What are you testing?</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Provide your product details. If you include a live URL, UXQA will run an instant autonomous audit on completion.
-                </p>
-
-                <div className="space-y-3 pt-2">
-                  <div>
-                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Product Name</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. HyperFlow Studio"
-                      value={formData.productName || ''}
-                      onChange={(e) => setFormData({ ...formData, productName: e.target.value })}
-                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-
                   <div>
                     <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">
                       Live URL or Staging Domain <span className="text-blue-600 dark:text-blue-400 font-semibold">(Instant Audit Enabled)</span>
@@ -210,120 +151,143 @@ ${instantAudit.personaFeedback?.[0]?.recommendations?.map((r: string, i: number)
                       placeholder="https://app.yourdomain.com"
                       value={formData.productionUrl || ''}
                       onChange={(e) => setFormData({ ...formData, productionUrl: e.target.value })}
-                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
+                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-mono"
                     />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Product Name</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Apex Fintech"
+                        value={formData.productName || ''}
+                        onChange={(e) => setFormData({ ...formData, productName: e.target.value })}
+                        className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Your Role</label>
+                      <select
+                        value={formData.role}
+                        onChange={(e) => setFormData({ ...formData, role: e.target.value as any })}
+                        className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
+                      >
+                        <option value="Vibe Coder">Vibe Coder (AI-Assisted Builder)</option>
+                        <option value="Solo Founder">Solo Founder / Technical Founder</option>
+                        <option value="Product Marketer / Growth">Product Marketer / Growth</option>
+                        <option value="Engineering Lead">Engineering Lead / CTO</option>
+                        <option value="Product Lead">Product Manager / Head of Product</option>
+                        <option value="Agency Owner">Agency Owner / Freelance Consultant</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Your Name</label>
+                      <input
+                        type="text"
+                        placeholder="Alex Morgan"
+                        value={formData.fullName || ''}
+                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                        className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Work Email</label>
+                      <input
+                        type="email"
+                        placeholder="alex@company.com"
+                        value={formData.workEmail || ''}
+                        onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
+                        className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 font-sans"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 2: Goal & Context */}
+            {step === 2 && (
+              <div className="space-y-4">
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">Goal &amp; Product Context</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Define your customer profile and primary friction focus for the simulated test runner.
+                </p>
+
+                <div className="space-y-4 pt-2">
+                  <div>
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1.5">Target Customer Persona</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {[
+                        { label: 'Non-technical Consumer', sub: 'Simplicity & clarity' },
+                        { label: 'B2B Professional', sub: 'Density & speed' },
+                        { label: 'Developer', sub: 'Tech rigor & accuracy' }
+                      ].map((p, idx) => (
+                        <label
+                          key={idx}
+                          className={`p-3 border cursor-pointer text-xs transition-colors ${
+                            formData.targetPersona === p.label
+                              ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white font-medium'
+                              : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="targetPersona"
+                            checked={formData.targetPersona === p.label}
+                            onChange={() => setFormData({ ...formData, targetPersona: p.label as any })}
+                            className="sr-only"
+                          />
+                          <div className="font-semibold">{p.label}</div>
+                          <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{p.sub}</div>
+                        </label>
+                      ))}
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Repository Stack</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Next.js 15, Vite + React, Remix, Svelte"
-                      value={formData.techStack || ''}
-                      onChange={(e) => setFormData({ ...formData, techStack: e.target.value })}
-                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
-                    />
+                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1.5">Primary Friction Concern</label>
+                    <div className="space-y-2">
+                      {[
+                        'I am scared my app breaks when I push new features.',
+                        'My mobile responsive layout looks broken or overflows.',
+                        'I need clean product screenshots and video tours for marketing.'
+                      ].map((pain, idx) => (
+                        <label
+                          key={idx}
+                          className={`block p-2.5 border cursor-pointer text-xs transition-colors ${
+                            formData.topPainPoint === pain
+                              ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white font-medium'
+                              : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="radio"
+                              name="topPainPoint"
+                              checked={formData.topPainPoint === pain}
+                              onChange={() => setFormData({ ...formData, topPainPoint: pain })}
+                              className="accent-blue-600"
+                            />
+                            <span>{pain}</span>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Step 3: Target Persona */}
+            {/* Step 3: Review Scope & Rigor */}
             {step === 3 && (
               <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">Who is your ideal customer?</h3>
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">Review Scope &amp; Rigor</h3>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Our Workers AI models will simulate this profile during exploratory UI testing.
-                </p>
-
-                <div className="space-y-3 pt-2">
-                  {[
-                    {
-                      label: 'Non-technical Consumer',
-                      desc: 'Requires crystal-clear language, zero technical terms, obvious buttons and instant cues.'
-                    },
-                    {
-                      label: 'B2B Professional',
-                      desc: 'Needs high information density, fast keyboard navigation, and streamlined workflows.'
-                    },
-                    {
-                      label: 'Developer / Technical User',
-                      desc: 'Scrutinizes API documentation, keybindings, and console errors.'
-                    }
-                  ].map((p, idx) => (
-                    <label
-                      key={idx}
-                      className={`block p-4 border cursor-pointer transition-colors ${
-                        formData.targetPersona === p.label
-                          ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white'
-                          : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <input
-                          type="radio"
-                          name="targetPersona"
-                          checked={formData.targetPersona === p.label}
-                          onChange={() => setFormData({ ...formData, targetPersona: p.label as any })}
-                          className="accent-blue-600"
-                        />
-                        <div>
-                          <div className="text-sm font-semibold text-gray-900 dark:text-white">{p.label}</div>
-                          <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{p.desc}</div>
-                        </div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Step 4: Top QA Pain Points */}
-            {step === 4 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">What keeps you up at night?</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Select your primary operational headache so we prioritise the right assertions.
-                </p>
-
-                <div className="space-y-2.5 pt-2">
-                  {[
-                    'I am scared my app breaks when I push new features.',
-                    'My mobile responsive layout looks broken or overflows.',
-                    'I do not have time to write or run complex automated tests.',
-                    'My computer slows to a crawl when running local test browsers.',
-                    'I need clean product screenshots and video tours for marketing.'
-                  ].map((pain, idx) => (
-                    <label
-                      key={idx}
-                      className={`block p-3 border cursor-pointer text-xs transition-colors ${
-                        formData.topPainPoint === pain
-                          ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white font-medium'
-                          : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-2.5">
-                        <input
-                          type="radio"
-                          name="topPainPoint"
-                          checked={formData.topPainPoint === pain}
-                          onChange={() => setFormData({ ...formData, topPainPoint: pain })}
-                          className="accent-blue-600"
-                        />
-                        <span>{pain}</span>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Step 5: Testing Rigor */}
-            {step === 5 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">What review rigor do you need?</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Select the level of scrutiny applied on every git push.
+                  Select the level of scrutiny applied on this autonomous edge evaluation.
                 </p>
 
                 <div className="space-y-3 pt-2">
@@ -343,7 +307,7 @@ ${instantAudit.personaFeedback?.[0]?.recommendations?.map((r: string, i: number)
                   ].map((r, idx) => (
                     <label
                       key={idx}
-                      className={`block p-4 border cursor-pointer transition-colors ${
+                      className={`block p-3.5 border cursor-pointer transition-colors ${
                         formData.reviewRigor === r.label
                           ? 'bg-blue-50 dark:bg-blue-950/30 border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white'
                           : 'bg-gray-50 dark:bg-[#0a0a0c] border-gray-200 dark:border-swiss-border text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600'
@@ -358,45 +322,16 @@ ${instantAudit.personaFeedback?.[0]?.recommendations?.map((r: string, i: number)
                           className="accent-blue-600"
                         />
                         <div>
-                          <div className="text-sm font-semibold text-gray-900 dark:text-white">{r.label}</div>
+                          <div className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">{r.label}</div>
                           <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{r.desc}</div>
                         </div>
                       </div>
                     </label>
                   ))}
-                </div>
-              </div>
-            )}
 
-            {/* Step 6: Referral & Cohort Activation */}
-            {step === 6 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">How did you hear about UXQA?</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Final step to activate your profile and execute the autonomous edge audit.
-                </p>
-
-                <div className="space-y-3 pt-2">
-                  <div>
-                    <label className="block text-xs font-mono text-gray-700 dark:text-gray-300 mb-1">Referral Source</label>
-                    <select
-                      value={formData.referralSource}
-                      onChange={(e) => setFormData({ ...formData, referralSource: e.target.value })}
-                      className="w-full bg-gray-50 dark:bg-[#0a0a0c] border border-gray-300 dark:border-swiss-border px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
-                    >
-                      <option value="Radoss Ecosystem">Radoss Ecosystem (AIRA, Naija Grid)</option>
-                      <option value="Twitter / X">Twitter / X (@UchennaInnocent)</option>
-                      <option value="LinkedIn">LinkedIn</option>
-                      <option value="GitHub">GitHub / Open Source</option>
-                      <option value="Founder Referral">Friend or Founder Referral</option>
-                    </select>
-                  </div>
-
-                  <div className="p-4 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border font-mono text-xs text-gray-600 dark:text-gray-400 space-y-1">
-                    <div className="text-emerald-600 dark:text-emerald-400 font-semibold">Instant Execution Guarantees:</div>
-                    <div>• 100% Free Cloudflare R2 Egress Storage</div>
-                    <div>• Sub-second Autonomous Edge Inspection</div>
-                    <div>• 0 MB Local Developer RAM Consumed</div>
+                  <div className="p-3 bg-gray-50 dark:bg-[#0a0a0c] border border-gray-200 dark:border-swiss-border font-mono text-[11px] text-gray-600 dark:text-gray-400 flex items-center justify-between">
+                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold">• 0 MB Local Developer RAM Consumed</span>
+                    <span>100% Free Cloudflare R2 Storage</span>
                   </div>
                 </div>
               </div>
@@ -423,7 +358,7 @@ ${instantAudit.personaFeedback?.[0]?.recommendations?.map((r: string, i: number)
                 <span>
                   {isSubmitting
                     ? 'Executing Edge Audit...'
-                    : step === 6
+                    : step === 3
                     ? 'Submit & Generate Audit'
                     : 'Continue'}
                 </span>

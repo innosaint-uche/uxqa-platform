@@ -81,6 +81,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onOpenW
         {/* Close Button */}
         <button
           onClick={onClose}
+          aria-label="Close login"
           className="absolute top-5 right-5 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
