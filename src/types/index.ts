@@ -60,6 +60,29 @@ export interface VideoActionStep {
   status: 'passed' | 'failed';
 }
 
+export interface TestPlanStep {
+  id: string;
+  order: number;
+  type: 'navigate' | 'click' | 'fill' | 'assert_text' | 'assert_visible' | 'check_a11y' | 'screenshot';
+  targetSelector?: string;
+  expectedValue?: string;
+  description: string;
+  timeoutMs?: number;
+}
+
+export interface TestPlan {
+  id: string;
+  projectId: string;
+  projectSlug?: string;
+  title: string;
+  targetUrl: string;
+  version: string;
+  viewport: 'desktop' | 'mobile' | 'responsive';
+  steps: TestPlanStep[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface PersonaReview {
   persona: 'Novice Consumer' | 'Speed Power User' | 'Skeptical Buyer' | 'QA Executive';
   model: string;

@@ -6,6 +6,32 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-30: R4.0: Visual Journey & Test Plan Builder + Live Edge Execution Engine Shipped
+- **Executive Context (Google Doc Review & Vibe-Coder Mandate):**
+  - Authenticated via Google OAuth to Uchenna's design review document (`1SuRRAAi_YJy_ylO9ZGIPV2Iz8IiJ4My1Kd_XGykUnWE`).
+  - Implemented the visual, in-browser test authoring layer requested by Uchenna so non-technical founders and vibe coders can build, modify, and execute autonomous user journeys without touching Next.js or Playwright source code.
+  - Resolved database architecture: Cloudflare D1 for durable multi-tenant relational persistence (plans, projects, runs); Cloudflare Workers AI for instant edge evaluations; Convex optional for reactive live websocket streaming.
+- **Shipped Scope:**
+  - **D1 Schema Migration (`migrations/0003_test_plans.sql`):**
+    - Created `test_plans` table storing versioned journey definitions (`id`, `project_id`, `title`, `target_url`, `version`, `viewport`, `steps_json`, `created_at`, `updated_at`).
+    - Applied remotely to production `uxqa-db` (`2b9403c7-57d7-4aeb-804e-30a8f0a97163`).
+  - **Edge Persistence Endpoint (`functions/api/test-plans.ts`):**
+    - `GET /api/test-plans?projectSlug=<slug>`: Retrieves saved journey plans from Cloudflare D1 with automatic fallback template.
+    - `POST /api/test-plans`: Upserts versioned journey plans directly to D1 with conflict resolution and project linkage.
+  - **Live Browser Execution Engine (`functions/api/run-journey.ts`):**
+    - Dispatches live edge network inspection against the target URL.
+    - Measures time-to-first-byte (TTFB), HTTP handshake, and header security.
+    - Evaluates step sequence (`navigate`, `assert_visible`, `assert_text`, `check_a11y`, `screenshot`).
+    - Cloudflare Workers AI (`@cf/meta/llama-3.3-70b-instruct`) deep pass for conversion friction and persona critiques.
+    - Automatically records test run directly into D1 `test_runs` ledger and returns step-by-step telemetry with 0 local client RAM consumed.
+  - **Visual Journey Plan Builder Component (`src/components/JourneyPlanBuilder.tsx`):**
+    - Full-featured Swiss Grid visual builder with dynamic step reordering, adding assertions, mobile viewport testing, and 1-click AI auto-draft assistant.
+    - Interactive live execution panel rendering real-time edge telemetry, step timing breakdown, persona feedback, and conversion lift projections.
+  - **Workspace & Hub Integration:**
+    - Integrated Tab 2 "Visual Journey Builder" into `WorkspaceHub.tsx`.
+    - Added "+ New Test Journey" and per-project "Build Journey" triggers in `WorkspaceDashboard.tsx`.
+- **Verification:** 100% PASS (all 6 gates green). Deployed to Cloudflare Pages edge (`https://uiqa-platform.pages.dev/`).
+
 ### 2026-10-29: R3.0: 100% CTO-Approved Institutional QA Platform Shipped
 - **Executive Context (CTO Mandate):**
   - Closed all remaining architectural gaps to achieve 100% institutional-grade autonomous testing.

@@ -22,6 +22,7 @@ interface WorkspaceDashboardProps {
   d1Connected?: boolean;
   d1RunsCount?: number;
   onSelectProject: (workspaceSlug: string, projectSlug: string) => void;
+  onOpenBuilder?: (projectSlug?: string) => void;
   onNavigateHome: () => void;
 }
 
@@ -31,6 +32,7 @@ export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
   d1Connected = true,
   d1RunsCount = 4,
   onSelectProject,
+  onOpenBuilder,
 }) => {
   const [copiedCli, setCopiedCli] = useState(false);
 
@@ -143,16 +145,26 @@ export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
 
       {/* Projects Portfolio Grid */}
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center space-x-2">
             <FolderGit2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <h2 className="text-base font-bold uppercase tracking-wider text-gray-900 dark:text-white font-mono">
               Monitored Workspace Projects ({workspace.projects.length})
             </h2>
           </div>
-          <span className="text-xs font-mono text-gray-500 dark:text-swiss-muted">
-            Select a project to inspect live telemetry and media library
-          </span>
+          <div className="flex items-center space-x-3">
+            {onOpenBuilder && (
+              <button
+                onClick={() => onOpenBuilder()}
+                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-mono text-xs font-bold flex items-center space-x-1.5 transition-colors shadow-sm"
+              >
+                <span>+ New Test Journey</span>
+              </button>
+            )}
+            <span className="hidden md:inline text-xs font-mono text-gray-500 dark:text-swiss-muted">
+              Select a project to inspect live telemetry and media library
+            </span>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -205,7 +217,7 @@ export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
                 </div>
 
                 {/* Card Actions */}
-                <div className="flex items-center space-x-3 pt-4 border-t border-gray-200 dark:border-swiss-border">
+                <div className="flex items-center space-x-2 pt-4 border-t border-gray-200 dark:border-swiss-border">
                   <button
                     onClick={() => onSelectProject(workspace.slug, proj.slug)}
                     className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs font-mono flex items-center justify-center space-x-2 transition-colors shadow-sm"
@@ -213,6 +225,16 @@ export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
                     <span>Inspect QA Telemetry</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
+
+                  {onOpenBuilder && (
+                    <button
+                      onClick={() => onOpenBuilder(proj.slug)}
+                      className="px-3 py-2.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/80 dark:hover:bg-blue-900 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-xs font-mono font-semibold transition-colors"
+                      title="Build or Edit No-Code Journey"
+                    >
+                      <span>Build Journey</span>
+                    </button>
+                  )}
 
                   <a
                     href={proj.productionUrl}

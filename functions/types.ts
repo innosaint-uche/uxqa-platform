@@ -38,3 +38,26 @@ export interface TelemetryPayload {
   personaFeedback?: any[];
   uxCopyAudit?: any[];
 }
+
+export interface TestPlanStep {
+  id: string;
+  order: number;
+  type: 'navigate' | 'click' | 'fill' | 'assert_text' | 'assert_visible' | 'check_a11y' | 'screenshot';
+  targetSelector?: string;
+  expectedValue?: string;
+  description: string;
+  timeoutMs?: number;
+}
+
+export interface TestPlan {
+  id: string;
+  projectId: string;
+  projectSlug?: string;
+  title: string;
+  targetUrl: string;
+  version: string;
+  viewport: 'desktop' | 'mobile' | 'responsive';
+  steps: TestPlanStep[];
+  createdAt?: string;
+  updatedAt?: string;
+}

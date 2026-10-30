@@ -18,6 +18,7 @@ import { InteractiveAiAuditor } from './InteractiveAiAuditor';
 import { ComposioDispatchPanel } from './ComposioDispatchPanel';
 import { ArtifactMediaExplorer } from './ArtifactMediaExplorer';
 import { WorkspaceDashboard } from './WorkspaceDashboard';
+import { JourneyPlanBuilder } from './JourneyPlanBuilder';
 
 interface WorkspaceHubProps {
   workspaceSlug?: string;
@@ -40,7 +41,7 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
     return projectSlug ? 'project' : 'workspace';
   });
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'personas' | 'copy' | 'artifacts'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'builder' | 'personas' | 'copy' | 'artifacts'>('overview');
   const [copied, setCopied] = useState(false);
   const [d1Connected, setD1Connected] = useState(true);
   const [d1RunsCount, setD1RunsCount] = useState(4);
@@ -228,6 +229,11 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
             d1Connected={d1Connected}
             d1RunsCount={d1RunsCount}
             onSelectProject={handleSelectProjectFromWorkspace}
+            onOpenBuilder={(projSlug) => {
+              if (projSlug) onSelectProject(currentWorkspace.slug, projSlug);
+              setActiveTab('builder');
+              setCurrentView('project');
+            }}
             onNavigateHome={onNavigateHome}
           />
         ) : (
@@ -303,10 +309,10 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
 
             {/* Tabs Navigation */}
             <div className="border-b border-gray-200 dark:border-swiss-border mb-6">
-              <div className="flex space-x-6 font-mono text-xs">
+              <div className="flex space-x-6 font-mono text-xs overflow-x-auto">
                 <button
                   onClick={() => setActiveTab('overview')}
-                  className={`pb-3 font-semibold transition-colors relative ${
+                  className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
                     activeTab === 'overview'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -315,34 +321,44 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
                   1. Execution Telemetry
                 </button>
                 <button
+                  onClick={() => setActiveTab('builder')}
+                  className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
+                    activeTab === 'builder'
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  2. Visual Journey Builder
+                </button>
+                <button
                   onClick={() => setActiveTab('personas')}
-                  className={`pb-3 font-semibold transition-colors relative ${
+                  className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
                     activeTab === 'personas'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  2. Simulated Personas ({telemetry.personaFeedback.length})
+                  3. Simulated Personas ({telemetry.personaFeedback.length})
                 </button>
                 <button
                   onClick={() => setActiveTab('copy')}
-                  className={`pb-3 font-semibold transition-colors relative ${
+                  className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
                     activeTab === 'copy'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  3. UX Copy &amp; Conversion ({telemetry.uxCopyAudit.length})
+                  4. UX Copy &amp; Conversion ({telemetry.uxCopyAudit.length})
                 </button>
                 <button
                   onClick={() => setActiveTab('artifacts')}
-                  className={`pb-3 font-semibold transition-colors relative ${
+                  className={`pb-3 font-semibold transition-colors relative whitespace-nowrap ${
                     activeTab === 'artifacts'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  4. Media &amp; Artifacts Explorer ({telemetry.artifacts.screenshotsCount} Captures)
+                  5. Media &amp; Artifacts Explorer ({telemetry.artifacts.screenshotsCount} Captures)
                 </button>
               </div>
             </div>
@@ -410,7 +426,15 @@ export const WorkspaceHub: React.FC<WorkspaceHubProps> = ({
               </div>
             )}
 
-            {/* Tab 2: Simulated Personas */}
+            {/* Tab 2: Visual Journey Builder (No-Code) */}
+            {activeTab === 'builder' && (
+              <JourneyPlanBuilder
+                initialProjectSlug={currentProject.slug}
+                initialTargetUrl={currentProject.productionUrl}
+              />
+            )}
+
+            {/* Tab 3: Simulated Personas */}
             {activeTab === 'personas' && (
               <div className="bg-white dark:bg-[#111215] border border-gray-200 dark:border-swiss-border p-6 sm:p-8 space-y-6">
                 <div>
