@@ -217,6 +217,10 @@ export function App() {
       <OnboardingModal
         isOpen={isWaitlistOpen}
         onClose={() => setIsWaitlistOpen(false)}
+        onNavigateToBuilder={() => {
+          setIsWaitlistOpen(false);
+          navigateToWorkspace('radoss', 'aira-academy');
+        }}
       />
 
       <LoginModal

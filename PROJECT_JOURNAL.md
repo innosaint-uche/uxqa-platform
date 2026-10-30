@@ -6,6 +6,27 @@
 
 ## 1. Release & Change Ledger
 
+### 2026-10-30: R4.1: Self-Serve Instant Audit Onboarding Loop Shipped
+- **Executive Context (Option 1 Execution):**
+  - Converted the onboarding waitlist flow (`/registration`) from a passive intake form into an active self-serve viral acquisition engine.
+  - When founders or vibe coders submit their product details, the edge worker immediately audits their live URL autonomously and renders their bespoke audit report right inside the modal.
+- **Shipped Scope:**
+  - **Edge Intake Endpoint Upgrade (`functions/api/intake.ts`):**
+    - Intercepts `productionUrl` on submission.
+    - Performs sub-400ms edge network probe, measuring latency, HTTP handshake, viewport responsiveness, heading hierarchy, interactive buttons, and image accessibility.
+    - Evaluates customer archetypes via Workers AI persona logic tailored to the founder's intake preferences.
+    - Commits the audit run into Cloudflare D1 `test_runs` (`onboarding-instant-audit`).
+    - Returns `instantAudit` payload alongside waitlist confirmation.
+  - **Interactive Instant Audit Showcase Modal (`src/components/OnboardingModal.tsx`):**
+    - High-impact Swiss Grid results card: Handshake Latency, Viewport Status, Element Counts, and 0 MB RAM badge.
+    - Displays tailored Persona Feedback score, critique, and actionable remediation steps.
+    - Displays UX Headline conversion lift recommendation.
+    - Added 1-click **"Copy Markdown for Claude / Antigravity"** button formatting the prompt for immediate pasting into AI coding tools.
+    - Added **"Launch Visual Journey Builder"** button transitioning founders straight into the journey builder.
+  - **Navigation Wiring (`src/App.tsx`):**
+    - Connected `onNavigateToBuilder` callback in `OnboardingModal` to route seamlessly to the workspace telemetry console.
+- **Verification:** 100% PASS (6/6 gates green). Deployed live to Cloudflare Pages edge (`https://uiqa-platform.pages.dev/`).
+
 ### 2026-10-30: R4.0: Visual Journey & Test Plan Builder + Live Edge Execution Engine Shipped
 - **Executive Context (Google Doc Review & Vibe-Coder Mandate):**
   - Authenticated via Google OAuth to Uchenna's design review document (`1SuRRAAi_YJy_ylO9ZGIPV2Iz8IiJ4My1Kd_XGykUnWE`).
